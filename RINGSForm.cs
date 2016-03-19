@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 namespace RINGSDrawing
 {
+
 	public class CircleNode : StaticNode
 	{
 		public Circle CircleValue { get; }
@@ -19,12 +20,19 @@ namespace RINGSDrawing
 			this.CircleValue = circle;
 		}
 	}
+
+
 	public partial class RINGSForm : Form
 	{
 		static int drawn = 0;
 		static int maxDraw = 300000;
 		Bitmap bitmap;
 		
+		/// <summary>
+		/// Creates a window with the given height and width.
+		/// </summary>
+		/// <param name="height"></param>
+		/// <param name="width"></param>
 		public RINGSForm(int height, int width)
 		{
 			InitializeComponent();
@@ -33,6 +41,11 @@ namespace RINGSDrawing
 			Graphics.FromImage(bitmap).Clear(Color.White);
 		}
 
+		/// <summary>
+		/// Draws all the given circles onto the window.
+		/// Additionally draws lines between a node and its children.
+		/// </summary>
+		/// <param name="node"></param>
 		public void DrawAllCircles(CircleNode node)
 		{
 			using (Graphics g = Graphics.FromImage(this.bitmap))
@@ -42,6 +55,13 @@ namespace RINGSDrawing
 			this.CreateGraphics().DrawImage(bitmap, Point.Empty);
 		}
 
+		/// <summary>
+		/// Recursively draws the given circle onto the given graphics in the given color.
+		/// 
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="graphics"></param>
+		/// <param name="color"></param>
 		public void DrawCircle(CircleNode node, System.Drawing.Graphics graphics, System.Drawing.Pen color)
 		{
 			Console.WriteLine("Drawing Progress: " + (drawn++ * 100) / maxDraw);
@@ -71,6 +91,10 @@ namespace RINGSDrawing
 			}
 		}
 		
+		/// <summary>
+		/// Saves the current bitmap drawing into the given file.
+		/// </summary>
+		/// <param name="fileName"></param>
 		public void drawToFile(string fileName)
 		{
 			bitmap.Save(fileName, ImageFormat.Png);

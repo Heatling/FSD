@@ -11,9 +11,14 @@ namespace RINGSDrawing
 		static void Main(string[] args)
 		{
 			t4Main(args);
+			//t5Main(args);
 		}
 		
-		static void t4Main(string[] args)
+		/// <summary>
+		/// Runs the RINGS algorithm on a small directory.
+		/// </summary>
+		/// <param name="args"></param>
+		public static void t4Main(string[] args)
 		{
 			string t = "<drive name = \"C:\">\n" +
 					"<directory name = \"d0\"> </directory>" +
@@ -42,10 +47,15 @@ namespace RINGSDrawing
 			Console.ReadKey();
 		}
 
-		static void t5Main(string[] args)
+		/// <summary>
+		/// Loads the system creenshot and runs the RINGS algorithm, saving the result
+		/// in a PNG file.
+		/// </summary>
+		/// <param name="args"></param>
+		public static void t5Main(string[] args)
 		{
 
-			Tag r = XMLReaderToTree.extractFileSystem(
+			Tag r = XMLReaderToTree.extractDirectory(
 				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
 
 			//printTagAndChildren(r, 0);
@@ -62,6 +72,11 @@ namespace RINGSDrawing
 
 		}
 
+		/// <summary>
+		/// Prints a textual representation of the given node and its decendents.
+		/// </summary>
+		/// <param name="root"></param>
+		/// <param name="indentation"></param>
 		public static void printTagAndChildren(Tag root, int indentation)
 		{
 			string t = "";

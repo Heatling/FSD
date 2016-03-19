@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace RINGSDrawing
 {
+	/// <summary>
+	/// Represents a circle with a position and a raduis.
+	/// </summary>
 	public class Circle
 	{
 		public double CenterX	{ get; }
@@ -29,6 +32,12 @@ namespace RINGSDrawing
 		static int drawn = 0;
 		static int maxDraw = 300000;
 		
+		/// <summary>
+		/// Makes a RINGS layout of the tree in the given node.
+		/// </summary>
+		/// <param name="root">The tree to draw</param>
+		/// <param name="size">The size of the layout</param>
+		/// <returns></returns>
 		public static CircleNode MakeLayout(Node root, double size)
 		{
 			CircleNode layout;
@@ -48,7 +57,15 @@ namespace RINGSDrawing
 			return null;
 			
 		}
-
+		/// <summary>
+		/// Draws the children of the given node, in the circle 
+		/// parameters given.
+		/// </summary>
+		/// <param name="node"></param>
+		/// <param name="centerX"></param>
+		/// <param name="centerY"></param>
+		/// <param name="radius"></param>
+		/// <returns></returns>
 		static CircleNode[] DrawChildrenOfNode(Node node, double centerX, double centerY, double radius)
 		{
 			Console.WriteLine("Layout progress: " + (++drawn * 100) / maxDraw);
@@ -111,6 +128,12 @@ namespace RINGSDrawing
 			return childrenCircleNodes;
 		}
 
+		/// <summary>
+		/// Sorts the given lists of nodes so that the largest is 
+		/// at the lowest position.
+		/// The size of a node is specified by the number of direct children it has.
+		/// </summary>
+		/// <param name="nodes"></param>
 		static void sortByNumberOfChildrenLargestFirst(Node[] nodes)
 		{
 			Array.Sort(nodes, delegate (Node x, Node y) {
@@ -120,15 +143,25 @@ namespace RINGSDrawing
 
 		}
 
+		/// <summary>
+		/// Calculates the percentage area left, if the given number of circles
+		/// occupy the periphery
+		/// </summary>
+		/// <param name="n"></param>
+		/// <returns></returns>
 		static double areaLeftInCenter(int n)
 		{
 			return Math.Pow(1 - Math.Sin(Math.PI / n), 2)/Math.Pow(1+Math.Sin(Math.PI/ n),2);
 		}
-		//
-		// Summary:
-		//		increase.
-		//Returns:
-		//		Returns.
+		
+		/// <summary>
+		/// Calculates the number of nodes to put in the periphery based on the number of
+		/// children they have.
+		/// Only looks at the nodes at and after the given index.
+		/// </summary>
+		/// <param name="nodes"></param>
+		/// <param name="firstChild"></param>
+		/// <returns></returns>
 		static int findMaxChildrenInLevel(Node[] nodes, int firstChild)
 		{
 			double tempAreaTaken, tempChildDecendentFraction;
@@ -153,6 +186,14 @@ namespace RINGSDrawing
 			return nodes.Length-firstChild;
 		}
 
+		/// <summary>
+		/// Summates the total number of direct children of the given
+		/// list of nodes.
+		/// </summary>
+		/// <param name="nodes"></param>
+		/// <param name="firstNode"></param>
+		/// <param name="lastNodeExclusive"></param>
+		/// <returns></returns>
 		static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
 		{
 			int sum = 0;
