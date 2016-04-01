@@ -166,12 +166,12 @@ namespace RINGSDrawing
 		{
 			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length + 
 			//"], firstChild[" + firstChild + "]");
-			double tempAreaTaken, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
+			double tempAreaLeftInCenter, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
 			for (int i = 3; i<nodes.Length-firstChild; i++)
 			{
-				//Console.WriteLine("Area taken: i = " + i);
-				tempAreaTaken = areaLeftInCenter(i);
-				//Console.WriteLine("Area taken: tempAreaTaken = " + tempAreaTaken);
+				//Console.WriteLine("i = " + i);
+				tempAreaLeftInCenter = areaLeftInCenter(i);
+				//Console.WriteLine("tempAreaLeftInCenter = " + tempAreaLeftInCenter);
 
 				tempChildrenOfLevel = (double)numberOfChildren(nodes, firstChild, firstChild + i);
 				//Console.WriteLine("Children of level = " + tempChildrenOfLevel);
@@ -187,7 +187,7 @@ namespace RINGSDrawing
 				tempChildDecendentFraction = tempChildrenOfLevel / tempTotalChildren;
 
 				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
-				if (tempChildDecendentFraction >= 1.0 - tempAreaTaken)
+				if (tempChildDecendentFraction >= 1.0 - tempAreaLeftInCenter)
 				{
 					return i;
 				}

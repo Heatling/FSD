@@ -78,14 +78,10 @@ namespace RINGSDrawing
 				if (color == Pens.Red)
 				{
 					DrawCircle(n, graphics, Pens.Blue);
-					graphics.DrawLine(Pens.Blue, (int)c.CenterX, (int)c.CenterY,
-								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
 				}
 				else
 				{
 					DrawCircle(n, graphics, Pens.Red);
-					graphics.DrawLine(Pens.Red, (int)c.CenterX, (int)c.CenterY,
-								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
 				}
 				
 			}
