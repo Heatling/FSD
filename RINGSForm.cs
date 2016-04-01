@@ -67,23 +67,26 @@ namespace RINGSDrawing
 			Console.WriteLine("Drawing Progress: " + (drawn++ * 100) / maxDraw);
 			System.Drawing.Rectangle tempRec;
 			Circle c = node.CircleValue;
+
 			//Console.WriteLine("Drawing circle: " + c);
 			tempRec = new System.Drawing.Rectangle(
 							(int)(c.CenterX - c.Radius), (int)(c.CenterY - c.Radius),
 							2 * (int)(c.Radius), 2 * (int)(c.Radius));
 			graphics.DrawEllipse(color, tempRec);
+
+			Pen colorToUse = (color == Pens.Red) ? Pens.Blue : Pens.Red;
+
 			foreach (CircleNode n in node.GetChildren())
 			{
-				
-				if (color == Pens.Red)
+				if (n.NumberOfChildren() > 0)
 				{
-					DrawCircle(n, graphics, Pens.Blue);
+					DrawCircle(n, graphics, colorToUse);
 				}
 				else
 				{
-					DrawCircle(n, graphics, Pens.Red);
+					graphics.DrawLine(colorToUse, (int)c.CenterX, (int)c.CenterY,
+								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
 				}
-				
 			}
 		}
 		

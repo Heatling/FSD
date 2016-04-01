@@ -69,10 +69,10 @@ namespace RINGSDrawing
 		static CircleNode[] DrawChildrenOfNode(Node node, double centerX, double centerY, double radius)
 		{
 			Console.WriteLine("Layout progress: " + (++drawn * 100) / maxDraw);
-			if (radius < 1)
+			/*if (radius < 1)
 			{
 				return new CircleNode[] { };
-			}
+			}*/
 			int childrenDrawn = 0;
 			Node[] children = node.GetChildren();
 			CircleNode[] childrenCircleNodes = new CircleNode[children.Length];
