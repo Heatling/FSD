@@ -164,18 +164,18 @@ namespace RINGSDrawing
 		/// <returns></returns>
 		static int findMaxChildrenInLevel(Node[] nodes, int firstChild)
 		{
-			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length + 
+			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length +
 			//"], firstChild[" + firstChild + "]");
-			double tempAreaTaken, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
+			double tempAreaLeftInCenter, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
 			for (int i = 3; i<nodes.Length-firstChild; i++)
 			{
 				//Console.WriteLine("Area taken: i = " + i);
-				tempAreaTaken = areaLeftInCenter(i);
-				//Console.WriteLine("Area taken: tempAreaTaken = " + tempAreaTaken);
+				tempAreaLeftInCenter = areaLeftInCenter(i);
+				//Console.WriteLine("Area taken: tempAreaLeftInCenter = " + tempAreaLeftInCenter);
 
-				tempChildrenOfLevel = (double)numberOfChildren(nodes, firstChild, firstChild + i);
+				tempChildrenOfLevel = (double)numberOfDecendents(nodes, firstChild, firstChild + i);
 				//Console.WriteLine("Children of level = " + tempChildrenOfLevel);
-				tempTotalChildren = (double) numberOfChildren(nodes, firstChild, nodes.Length);
+				tempTotalChildren = (double)numberOfDecendents(nodes, firstChild, nodes.Length);
 				//Console.WriteLine("Total children = " + tempTotalChildren);
 
 				if (tempChildrenOfLevel <= 0 || tempTotalChildren <= 0)
@@ -187,7 +187,7 @@ namespace RINGSDrawing
 				tempChildDecendentFraction = tempChildrenOfLevel / tempTotalChildren;
 
 				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
-				if (tempChildDecendentFraction >= tempAreaTaken)
+				if (tempChildDecendentFraction >= tempAreaLeftInCenter)
 				{
 					return i;
 				}
@@ -210,6 +210,23 @@ namespace RINGSDrawing
 			for(int i = firstNode; i<lastNodeExclusive; i++)
 			{
 				sum += nodes[i].NumberOfChildren();
+			}
+			return sum;
+		}
+
+		/// <summary>
+		/// Calculates the sum of total decendents of the chosed nodes.
+		/// </summary>
+		/// <param name="nodes"></param>
+		/// <param name="firstNode"></param>
+		/// <param name="lastNodeExclusive"></param>
+		/// <returns></returns>
+		static int numberOfDecendents(Node[] nodes, int firstNode, int lastNodeExclusive)
+		{
+			int sum = 0;
+			for(int i = firstNode; i<lastNodeExclusive; i++)
+			{
+				sum += nodes[i].NumberOfDecendents();
 			}
 			return sum;
 		}

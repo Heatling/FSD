@@ -68,7 +68,7 @@ namespace RINGSDrawing
 			Console.WriteLine("Created layout.");
 
 			RINGSForm f = new RINGSForm(drawingSize*2, drawingSize * 2);
-			f.Show();
+			//f.Show();
 			f.DrawAllCircles(layout);
 			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.png");
 			Console.ReadLine();
