@@ -38,7 +38,7 @@ namespace RINGSDrawing
 			int sum = this.NumberOfChildren();
 			foreach(Tag t in Children)
 			{
-				sum = t.NumberOfDecendents();
+				sum += t.NumberOfDecendents();
 			}
 			return sum;
 		}
