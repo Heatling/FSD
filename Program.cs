@@ -10,8 +10,10 @@ namespace RINGSDrawing
 	{
 		static void Main(string[] args)
 		{
-			t4Main(args);
-			//t5Main(args);
+			//t4Main(args);
+			t5Main(args);
+			//Console.WriteLine("F(9)= " + RINGS.areaLeftInCenter(9));
+			//Console.ReadKey();
 		}
 		
 		/// <summary>
@@ -21,6 +23,7 @@ namespace RINGSDrawing
 		public static void t4Main(string[] args)
 		{
 			string t = "<drive name = \"C:\">\n" +
+					"<directory name = \"d0\"> </directory>" +
 					"<directory name = \"d0\"> </directory>" +
 					"<directory name = \"d1\">Unauthorized</directory>" +
 					"<directory name = \"d2\"><file name = \"file2\"></file><directory name = \"file3\"></directory></directory>" +
@@ -59,16 +62,16 @@ namespace RINGSDrawing
 				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
 
 			//printTagAndChildren(r, 0);
+			int drawingSize = 8000;
 			Console.WriteLine("Loaded tree.");
-			CircleNode layout = RINGS.MakeLayout(r, 400);
+			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout.");
-			Circle tempC;
 
-			RINGSForm f = new RINGSForm(800,800);
+			RINGSForm f = new RINGSForm(drawingSize*2, drawingSize * 2);
 			f.Show();
 			f.DrawAllCircles(layout);
 			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.png");
-			Console.ReadKey();
+			Console.ReadLine();
 
 		}
 

@@ -149,7 +149,7 @@ namespace RINGSDrawing
 		/// </summary>
 		/// <param name="n"></param>
 		/// <returns></returns>
-		static double areaLeftInCenter(int n)
+		public static double areaLeftInCenter(int n)
 		{
 			return Math.Pow(1 - Math.Sin(Math.PI / n), 2)/Math.Pow(1+Math.Sin(Math.PI/ n),2);
 		}
@@ -164,25 +164,35 @@ namespace RINGSDrawing
 		/// <returns></returns>
 		static int findMaxChildrenInLevel(Node[] nodes, int firstChild)
 		{
-			double tempAreaTaken, tempChildDecendentFraction;
+			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length + 
+			//"], firstChild[" + firstChild + "]");
+			double tempAreaTaken, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
 			for (int i = 3; i<nodes.Length-firstChild; i++)
 			{
 				//Console.WriteLine("Area taken: i = " + i);
 				tempAreaTaken = areaLeftInCenter(i);
 				//Console.WriteLine("Area taken: tempAreaTaken = " + tempAreaTaken);
-				try {
-					tempChildDecendentFraction = numberOfChildren(nodes, firstChild, firstChild + i)
-												/ numberOfChildren(nodes, firstChild, nodes.Length);
-				}catch(DivideByZeroException err)
+
+				tempChildrenOfLevel = (double)numberOfChildren(nodes, firstChild, firstChild + i);
+				//Console.WriteLine("Children of level = " + tempChildrenOfLevel);
+				tempTotalChildren = (double) numberOfChildren(nodes, firstChild, nodes.Length);
+				//Console.WriteLine("Total children = " + tempTotalChildren);
+
+				if (tempChildrenOfLevel <= 0 || tempTotalChildren <= 0)
 				{
-					tempChildDecendentFraction = -1;
+					//Console.WriteLine("No children found, break");
+					break;
 				}
+
+				tempChildDecendentFraction = tempChildrenOfLevel / tempTotalChildren;
+
+				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
 				if (tempChildDecendentFraction >= tempAreaTaken)
 				{
 					return i;
 				}
 			}
-			
+			//Console.WriteLine("No k found, return " + (nodes.Length - firstChild));
 			return nodes.Length-firstChild;
 		}
 
