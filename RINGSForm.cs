@@ -26,6 +26,8 @@ namespace RINGSDrawing
 	{
 		static int drawn = 0;
 		static int maxDraw = 300000;
+		static Image fileThumb = Image.FromFile(@"resources/images/file-thumbnail.png");
+
 		Bitmap bitmap;
 		
 		/// <summary>
@@ -84,8 +86,20 @@ namespace RINGSDrawing
 				}
 				else
 				{
-					graphics.DrawLine(colorToUse, (int)c.CenterX, (int)c.CenterY,
+					
+					if (n.CircleValue.Radius >= fileThumb.Height)
+					{
+						tempRec = new System.Drawing.Rectangle(
+							(int)(n.CircleValue.CenterX - (fileThumb.Height/2)), 
+							(int)(n.CircleValue.CenterY - (fileThumb.Height/2)),
+							fileThumb.Height, fileThumb.Height);
+						graphics.DrawImage(fileThumb, tempRec);
+					}
+					else
+					{
+						graphics.DrawLine(colorToUse, (int)c.CenterX, (int)c.CenterY,
 								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
+					}
 				}
 			}
 		}

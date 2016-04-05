@@ -12,8 +12,7 @@ namespace RINGSDrawing
 		{
 			//t4Main(args);
 			t5Main(args);
-			//Console.WriteLine("F(9)= " + RINGS.areaLeftInCenter(9));
-			//Console.ReadKey();
+						
 		}
 		
 		/// <summary>
