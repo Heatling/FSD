@@ -15,9 +15,11 @@ namespace RINGSDrawing
 	public class CircleNode : StaticNode
 	{
 		public Circle CircleValue { get; }
-		public CircleNode(Circle circle, CircleNode[] children): base(children)
+		public Tag SourceTag { get; }
+		public CircleNode(Circle circle, Tag sourceTag, CircleNode[] children): base(children)
 		{
 			this.CircleValue = circle;
+			this.SourceTag = sourceTag;
 		}
 	}
 
@@ -80,26 +82,24 @@ namespace RINGSDrawing
 
 			foreach (CircleNode n in node.GetChildren())
 			{
-				if (n.NumberOfChildren() > 0)
+				Tag sourceTag = n.SourceTag;
+				string type;
+				sourceTag.Properties.TryGetValue("type",out type);
+				
+				if (!type.Equals("file"))
 				{
 					DrawCircle(n, graphics, colorToUse);
 				}
 				else
 				{
+					int halfImageSize = (int)((
+						Math.Cos(45.0 * (Math.PI / 180.0))*n.CircleValue.Radius));
+					tempRec = new System.Drawing.Rectangle(
+						(int)(n.CircleValue.CenterX - halfImageSize), 
+						(int)(n.CircleValue.CenterY - halfImageSize),
+						2 * halfImageSize, 2 * halfImageSize);
+					graphics.DrawImage(fileThumb, tempRec);
 					
-					if (n.CircleValue.Radius >= fileThumb.Height)
-					{
-						tempRec = new System.Drawing.Rectangle(
-							(int)(n.CircleValue.CenterX - (fileThumb.Height/2)), 
-							(int)(n.CircleValue.CenterY - (fileThumb.Height/2)),
-							fileThumb.Height, fileThumb.Height);
-						graphics.DrawImage(fileThumb, tempRec);
-					}
-					else
-					{
-						graphics.DrawLine(colorToUse, (int)c.CenterX, (int)c.CenterY,
-								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
-					}
 				}
 			}
 		}

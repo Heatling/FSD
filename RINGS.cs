@@ -38,7 +38,7 @@ namespace RINGSDrawing
 		/// <param name="root">The tree to draw</param>
 		/// <param name="size">The size of the layout</param>
 		/// <returns></returns>
-		public static CircleNode MakeLayout(Node root, double size)
+		public static CircleNode MakeLayout(Tag root, double size)
 		{
 			CircleNode layout;
 			double origin = size;
@@ -50,7 +50,7 @@ namespace RINGSDrawing
 				tempRootPos = new Circle(origin, origin, origin);
 				//Console.WriteLine("Root position: "+tempRootPos);
 				drawn++;
-				layout = new CircleNode(tempRootPos,
+				layout = new CircleNode(tempRootPos, null,
 					DrawChildrenOfNode(root, origin, origin, origin));
 				return layout;
 			}
@@ -66,7 +66,7 @@ namespace RINGSDrawing
 		/// <param name="centerY"></param>
 		/// <param name="radius"></param>
 		/// <returns></returns>
-		static CircleNode[] DrawChildrenOfNode(Node node, double centerX, double centerY, double radius)
+		static CircleNode[] DrawChildrenOfNode(Tag node, double centerX, double centerY, double radius)
 		{
 			Console.WriteLine("Layout progress: " + (++drawn * 100) / maxDraw);
 			/*if (radius < 1)
@@ -74,7 +74,7 @@ namespace RINGSDrawing
 				return new CircleNode[] { };
 			}*/
 			int childrenDrawn = 0;
-			Node[] children = node.GetChildren();
+			Tag[] children = (Tag[])node.GetChildren();
 			CircleNode[] childrenCircleNodes = new CircleNode[children.Length];
 			//Console.WriteLine("Number of children: " + children.Length);
 			int tempMaxChildrenInLevel;
@@ -100,7 +100,7 @@ namespace RINGSDrawing
 							radius);
 						//Console.WriteLine("Circle: " + c);
 						childrenCircleNodes[i + childrenDrawn] =
-							new CircleNode(c,
+							new CircleNode(c, children[i + childrenDrawn],
 								DrawChildrenOfNode(children[i + childrenDrawn],
 												c.CenterX, c.CenterY, c.Radius));
 					}
@@ -114,7 +114,7 @@ namespace RINGSDrawing
 								childRadius);
 						//Console.WriteLine("Circle: " + c);
 						childrenCircleNodes[i + childrenDrawn] =
-							new CircleNode(c,
+							new CircleNode(c, children[i + childrenDrawn],
 								DrawChildrenOfNode(children[i + childrenDrawn],
 												c.CenterX, c.CenterY, c.Radius));
 					}
