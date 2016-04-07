@@ -51,7 +51,7 @@ namespace RINGSDrawing
 				Circle tempRootPos;
 				//Draw root first
 				tempRootPos = new Circle(origin, origin, origin);
-				tempRootPos.FillColor = Color.FromArgb(0xffffff);
+				tempRootPos.FillColor = Color.FromArgb(0x0000ff);
 				//Console.WriteLine("Root position: "+tempRootPos);
 				drawn++;
 				layout = new CircleNode(tempRootPos,
@@ -229,9 +229,9 @@ namespace RINGSDrawing
 		/// <returns></returns>
 		public static Color getNextColor(Color col)
 		{
-			int newRed = (col.R / 2);
-			int newGreen = (col.G / 2);
-			int newBlue = (col.B / 2) +(col.G / 4) + (col.R / 4);
+			int newRed = (col.R / 2) + (col.G/2);
+			int newGreen = (col.G / 2) + (col.B/2);
+			int newBlue = (col.B / 2);
 			return Color.FromArgb(newRed, newGreen, newBlue);
 		}
 	}
