@@ -12,8 +12,15 @@ namespace RINGSDrawing
 		{
 			//t4Main(args);
 			t5Main(args);
-			//Console.WriteLine("F(9)= " + RINGS.areaLeftInCenter(9));
-			//Console.ReadKey();
+			/*
+			Color c = Color.FromArgb(0xffffff);
+			while(c.R> 0 || c.G >0 || c.B>0)
+			{
+				Console.WriteLine("R:" + c.R + ", G:" + c.G + ", B:"+c.B);
+				c = RINGS.getNextColor(c);
+			}
+			Console.ReadKey();
+			*/
 		}
 		
 		/// <summary>
@@ -37,7 +44,6 @@ namespace RINGSDrawing
 			Console.ReadKey();
 			CircleNode layout = RINGS.MakeLayout(r, 350);
 			Console.WriteLine("Circles:");
-			Circle tempC;
 
 			Console.ReadKey();
 			RINGSForm f = (new RINGSForm(700,700));
@@ -62,7 +68,7 @@ namespace RINGSDrawing
 				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
 
 			//printTagAndChildren(r, 0);
-			int drawingSize =6000;
+			int drawingSize = 8000;
 			Console.WriteLine("Loaded tree.");
 			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout.");

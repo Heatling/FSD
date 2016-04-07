@@ -50,7 +50,7 @@ namespace RINGSDrawing
 		{
 			using (Graphics g = Graphics.FromImage(this.bitmap))
 			{
-				DrawCircle(node, g, Pens.Red);
+				DrawCircle(node, g);
 			}
 			this.CreateGraphics().DrawImage(bitmap, Point.Empty);
 		}
@@ -62,31 +62,27 @@ namespace RINGSDrawing
 		/// <param name="node"></param>
 		/// <param name="graphics"></param>
 		/// <param name="color"></param>
-		public void DrawCircle(CircleNode node, System.Drawing.Graphics graphics, System.Drawing.Pen color)
+		public void DrawCircle(CircleNode node, System.Drawing.Graphics graphics)
 		{
 			Console.WriteLine("Drawing Progress: " + (drawn++ * 100) / maxDraw);
 			System.Drawing.Rectangle tempRec;
 			Circle c = node.CircleValue;
+			Brush color = new SolidBrush(
+				node.CircleValue.FillColor);
+			
 			//Console.WriteLine("Drawing circle: " + c);
 			tempRec = new System.Drawing.Rectangle(
 							(int)(c.CenterX - c.Radius), (int)(c.CenterY - c.Radius),
 							2 * (int)(c.Radius), 2 * (int)(c.Radius));
-			graphics.DrawEllipse(color, tempRec);
+			graphics.FillEllipse(color, tempRec);
+			graphics.DrawEllipse(Pens.Black, tempRec);
 			foreach (CircleNode n in node.GetChildren())
 			{
 				
-				if (color == Pens.Red)
-				{
-					DrawCircle(n, graphics, Pens.Blue);
-					graphics.DrawLine(Pens.Blue, (int)c.CenterX, (int)c.CenterY,
+				DrawCircle(n, graphics);
+				graphics.DrawLine(new Pen(n.CircleValue.FillColor)
+								, (int)c.CenterX, (int)c.CenterY,
 								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
-				}
-				else
-				{
-					DrawCircle(n, graphics, Pens.Red);
-					graphics.DrawLine(Pens.Red, (int)c.CenterX, (int)c.CenterY,
-								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
-				}
 				
 			}
 		}
@@ -98,6 +94,15 @@ namespace RINGSDrawing
 		public void drawToFile(string fileName)
 		{
 			bitmap.Save(fileName, ImageFormat.Png);
+		}
+
+		public static Color createColorFromInt(int colorCode)
+		{
+			int blue = colorCode % 0x100;
+			int green = ((colorCode % 0x10000) - blue)/0x100;
+			int red = colorCode/0x10000;
+					
+			return Color.FromArgb(red, green, blue);
 		}
 
 	}

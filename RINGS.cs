@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace RINGSDrawing
 		public double CenterX	{ get; }
 		public double CenterY	{ get; }
 		public double Radius	{ get; }
+		public Color FillColor	{ get; set; }
 
 		public Circle(double centerX, double centerY, double radius)
 		{
@@ -21,6 +23,7 @@ namespace RINGSDrawing
 			this.CenterY = centerY;
 			this.Radius = radius;
 		}
+
 		public override string ToString()
 		{
 			return "(X: " + this.CenterX + ", Y: " + this.CenterY + " , R: " + this.Radius + ")";
@@ -48,10 +51,11 @@ namespace RINGSDrawing
 				Circle tempRootPos;
 				//Draw root first
 				tempRootPos = new Circle(origin, origin, origin);
+				tempRootPos.FillColor = Color.FromArgb(0xffffff);
 				//Console.WriteLine("Root position: "+tempRootPos);
 				drawn++;
 				layout = new CircleNode(tempRootPos,
-					DrawChildrenOfNode(root, origin, origin, origin));
+					DrawChildrenOfNode(root, origin, origin, origin, tempRootPos.FillColor));
 				return layout;
 			}
 			return null;
@@ -66,13 +70,11 @@ namespace RINGSDrawing
 		/// <param name="centerY"></param>
 		/// <param name="radius"></param>
 		/// <returns></returns>
-		static CircleNode[] DrawChildrenOfNode(Node node, double centerX, double centerY, double radius)
+		static CircleNode[] DrawChildrenOfNode(Node node, double centerX, double centerY, 
+						double radius, Color parentColor)
 		{
 			Console.WriteLine("Layout progress: " + (++drawn * 100) / maxDraw);
-			if (radius < 1)
-			{
-				return new CircleNode[] { };
-			}
+			
 			int childrenDrawn = 0;
 			Node[] children = node.GetChildren();
 			CircleNode[] childrenCircleNodes = new CircleNode[children.Length];
@@ -83,6 +85,9 @@ namespace RINGSDrawing
 			//Console.WriteLine("Starting sort.");
 			sortByNumberOfChildrenLargestFirst(children);
 			//Console.WriteLine("Ending sort");
+			
+			Color childColor = getNextColor(parentColor);
+
 			while (childrenDrawn < children.Length)
 			{
 				tempMaxChildrenInLevel = findMaxChildrenInLevel(children, childrenDrawn);
@@ -92,17 +97,19 @@ namespace RINGSDrawing
 
 				for (int i = 0; i<tempMaxChildrenInLevel; i++)
 				{
+					
 					if (tempMaxChildrenInLevel == 1)
 					{
 						Circle c = new Circle(
 							centerX,
 							centerY,
 							radius);
+						c.FillColor = childColor;
 						//Console.WriteLine("Circle: " + c);
 						childrenCircleNodes[i + childrenDrawn] =
 							new CircleNode(c,
 								DrawChildrenOfNode(children[i + childrenDrawn],
-												c.CenterX, c.CenterY, c.Radius));
+												c.CenterX, c.CenterY, c.Radius, childColor));
 					}
 					else
 					{
@@ -112,11 +119,12 @@ namespace RINGSDrawing
 								centerX + Math.Cos(direction) * (radius - childRadius),
 								centerY + Math.Sin(direction) * (radius - childRadius),
 								childRadius);
+						c.FillColor = childColor;
 						//Console.WriteLine("Circle: " + c);
 						childrenCircleNodes[i + childrenDrawn] =
 							new CircleNode(c,
 								DrawChildrenOfNode(children[i + childrenDrawn],
-												c.CenterX, c.CenterY, c.Radius));
+												c.CenterX, c.CenterY, c.Radius, childColor));
 					}
 				}
 				childrenDrawn += tempMaxChildrenInLevel;
@@ -212,6 +220,19 @@ namespace RINGSDrawing
 				sum += nodes[i].NumberOfChildren();
 			}
 			return sum;
+		}
+
+		/// <summary>
+		/// Returns the next color to use, given a starting color.
+		/// </summary>
+		/// <param name="col"></param>
+		/// <returns></returns>
+		public static Color getNextColor(Color col)
+		{
+			int newRed = (col.R / 2) +(col.G / 2);
+			int newGreen = (col.G / 2);
+			int newBlue = (col.B / 2) + (col.G / 2);
+			return Color.FromArgb(newRed, newGreen, newBlue);
 		}
 	}
 }

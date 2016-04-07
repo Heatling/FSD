@@ -184,7 +184,6 @@ namespace RINGSDrawing
 				default:
 					{
 						throw new XMLMismatchException("Subelement not recognized", reader);
-						break;
 					}
 			}
 			reader.Close();
