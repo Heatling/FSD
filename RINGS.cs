@@ -229,9 +229,9 @@ namespace RINGSDrawing
 		/// <returns></returns>
 		public static Color getNextColor(Color col)
 		{
-			int newRed = (col.R / 2) +(col.G / 2);
+			int newRed = (col.R / 2);
 			int newGreen = (col.G / 2);
-			int newBlue = (col.B / 2) + (col.G / 2);
+			int newBlue = (col.B / 2) +(col.G / 4) + (col.R / 4);
 			return Color.FromArgb(newRed, newGreen, newBlue);
 		}
 	}
