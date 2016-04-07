@@ -71,7 +71,14 @@ namespace RINGSDrawing
 			tempRec = new System.Drawing.Rectangle(
 							(int)(c.CenterX - c.Radius), (int)(c.CenterY - c.Radius),
 							2 * (int)(c.Radius), 2 * (int)(c.Radius));
-			graphics.DrawEllipse(color, tempRec);
+			if (node.NumberOfChildren() > 0)
+			{
+				graphics.DrawEllipse(color, tempRec);
+			}
+			else
+			{
+				graphics.FillEllipse(new SolidBrush(color.Color), tempRec);
+			}
 			foreach (CircleNode n in node.GetChildren())
 			{
 				
@@ -79,6 +86,11 @@ namespace RINGSDrawing
 				{
 					DrawCircle(n, graphics, Pens.Blue);
 					graphics.DrawLine(Pens.Blue, (int)c.CenterX, (int)c.CenterY,
+								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
+				}else if(color == Pens.Blue)
+				{
+					DrawCircle(n, graphics, Pens.Green);
+					graphics.DrawLine(Pens.Green, (int)c.CenterX, (int)c.CenterY,
 								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
 				}
 				else
