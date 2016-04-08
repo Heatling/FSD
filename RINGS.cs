@@ -187,7 +187,7 @@ namespace RINGSDrawing
 				tempChildDecendentFraction = tempChildrenOfLevel / tempTotalChildren;
 
 				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
-				if (tempChildDecendentFraction >= tempAreaLeftInCenter)
+				if (tempChildDecendentFraction >= 1.0 - tempAreaLeftInCenter)
 				{
 					return i;
 				}
