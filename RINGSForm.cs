@@ -92,14 +92,9 @@ namespace RINGSDrawing
 				}
 				else
 				{
-					int halfImageSize = (int)((
-						Math.Cos(45.0 * (Math.PI / 180.0))*n.CircleValue.Radius));
-					tempRec = new System.Drawing.Rectangle(
-						(int)(n.CircleValue.CenterX - halfImageSize), 
-						(int)(n.CircleValue.CenterY - halfImageSize),
-						2 * halfImageSize, 2 * halfImageSize);
-					graphics.DrawImage(fileThumb, tempRec);
-					
+					graphics.DrawLine(Pens.Blue, (int)c.CenterX, (int)c.CenterY,
+								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
+
 				}
 			}
 		}
