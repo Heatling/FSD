@@ -92,9 +92,12 @@ namespace RINGSDrawing
 				}
 				else
 				{
-					graphics.DrawLine(Pens.Blue, (int)c.CenterX, (int)c.CenterY,
-								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
 
+					tempRec =new System.Drawing.Rectangle(
+							(int)(n.CircleValue.CenterX - n.CircleValue.Radius), 
+							(int)(n.CircleValue.CenterY - n.CircleValue.Radius),
+							2 * (int)(n.CircleValue.Radius), 2 * (int)(n.CircleValue.Radius));
+					graphics.FillEllipse(new SolidBrush(colorToUse.Color), tempRec);
 				}
 			}
 		}
