@@ -97,7 +97,7 @@ namespace RINGSDrawing
 						Circle c = new Circle(
 							centerX,
 							centerY,
-							radius);
+							radius*0.9);
 						//Console.WriteLine("Circle: " + c);
 						childrenCircleNodes[i + childrenDrawn] =
 							new CircleNode(c, children[i + childrenDrawn],
