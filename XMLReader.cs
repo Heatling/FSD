@@ -25,7 +25,17 @@ namespace RINGSDrawing
 
 		public override int NumberOfChildren()
 		{
-			return this.Children.Count;
+			String type;
+			this.Properties.TryGetValue("type", out type);
+			if (this.Children.Count == 0 &&
+				type.Equals("file"))
+			{
+				return 1;
+			}
+			else
+			{
+				return this.Children.Count;
+			}
 		}
 
 		public override Node[] GetChildren()
