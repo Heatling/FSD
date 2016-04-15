@@ -71,5 +71,33 @@ namespace RINGSDrawing
 			}
 		}
 
+		public static double getMedianFileRadiusOverDepth(CircleNode layout)
+		{
+			List<double> fileSizes = new List<double>();
+			List<int> depths = new List<int>();
+
+			addFilesToList(layout, fileSizes, depths, 0);
+
+			if (fileSizes.Count() != depths.Count())
+			{
+				throw new EvaluationException("File sizes and depths dont sync");
+			}
+
+			List<double> sizeOverDepth = new List<double>();
+
+			for(int i = 0; i<fileSizes.Count(); i++)
+			{
+				sizeOverDepth.Add(fileSizes.ElementAt(i) / depths.ElementAt(i));
+			}
+
+			if(fileSizes.Count() != sizeOverDepth.Count())
+			{
+				throw new EvaluationException("Wrong number of fractions for size over depth");
+			}
+			sizeOverDepth.Sort();
+
+			return sizeOverDepth.ElementAt((sizeOverDepth.Count() / 2)-1);
+		}
+
 	}
 }

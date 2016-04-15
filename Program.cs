@@ -99,6 +99,10 @@ namespace RINGSDrawing
 			Console.WriteLine("Created layout:");
 			double fileSizeOverDepthAverage = Evaluations.getAvarageFileRadiusOverDepth(layout);
 			Console.WriteLine("File size (radius) over depth average: " + fileSizeOverDepthAverage);
+
+			double fileSizeOverDepthMedian = Evaluations.getMedianFileRadiusOverDepth(layout);
+			Console.WriteLine("File size (radius) over depth median: " + fileSizeOverDepthMedian);
+
 			Console.ReadLine();
 		}
 
