@@ -11,8 +11,9 @@ namespace RINGSDrawing
 		static void Main(string[] args)
 		{
 			//t4Main(args);
-			t5Main(args);
-						
+			//t5Main(args);
+			//evaluateFS_SS_15_03_16();	
+			test1();	
 		}
 		
 		/// <summary>
@@ -72,6 +73,33 @@ namespace RINGSDrawing
 			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.png");
 			Console.ReadLine();
 
+		}
+
+
+		public static void evaluateFS_SS_15_03_16()
+		{
+			Tag r = XMLReaderToTree.extractDirectory(
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
+			int drawingSize = 8000;
+			Console.WriteLine("Loaded tree.");
+			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
+			Console.WriteLine("Created layout.");
+			double fileSizeOverDepthAverage = Evaluations.getAvarageFileRadiusOverDepth(layout);
+			Console.WriteLine("File size (radius) over depth average: " + fileSizeOverDepthAverage);
+			Console.ReadLine();
+		}
+		
+		public static void test1()
+		{
+			Tag r = XMLReaderToTree.extractDirectory(
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\RINGS-fig2-complete.xml", "");
+			int drawingSize = 8000;
+			Console.WriteLine("Loaded tree.");
+			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
+			Console.WriteLine("Created layout:");
+			double fileSizeOverDepthAverage = Evaluations.getAvarageFileRadiusOverDepth(layout);
+			Console.WriteLine("File size (radius) over depth average: " + fileSizeOverDepthAverage);
+			Console.ReadLine();
 		}
 
 		/// <summary>
