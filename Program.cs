@@ -12,8 +12,7 @@ namespace RINGSDrawing
 		{
 			//t4Main(args);
 			t5Main(args);
-			//Console.WriteLine("F(9)= " + RINGS.areaLeftInCenter(9));
-			//Console.ReadKey();
+						
 		}
 		
 		/// <summary>
@@ -62,7 +61,7 @@ namespace RINGSDrawing
 				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
 
 			//printTagAndChildren(r, 0);
-			int drawingSize =6000;
+			int drawingSize =8000;
 			Console.WriteLine("Loaded tree.");
 			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout.");
