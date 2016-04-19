@@ -12,8 +12,8 @@ namespace RINGSDrawing
 		{
 			//t4Main(args);
 			//t5Main(args);
-			//evaluateFS_SS_15_03_16();	
-			test1();	
+			evaluateFS_SS_15_03_16();	
+			//test1();	
 		}
 		
 		/// <summary>
@@ -86,6 +86,10 @@ namespace RINGSDrawing
 			Console.WriteLine("Created layout.");
 			double fileSizeOverDepthAverage = Evaluations.getAvarageFileRadiusOverDepth(layout);
 			Console.WriteLine("File size (radius) over depth average: " + fileSizeOverDepthAverage);
+			double fileSizeOverDepthMedian = Evaluations.getMedianFileRadiusOverDepth(layout);
+			Console.WriteLine("File size (radius) over depth median: " + fileSizeOverDepthMedian);
+			double staticnessAverage = Evaluations.getStaticnessAverage(layout);
+			Console.WriteLine("Staticness Average: " + staticnessAverage);
 			Console.ReadLine();
 		}
 		
@@ -103,6 +107,8 @@ namespace RINGSDrawing
 			double fileSizeOverDepthMedian = Evaluations.getMedianFileRadiusOverDepth(layout);
 			Console.WriteLine("File size (radius) over depth median: " + fileSizeOverDepthMedian);
 
+			double staticnessAverage = Evaluations.getStaticnessAverage(layout);
+			Console.WriteLine("Staticness Average: " + staticnessAverage);
 			Console.ReadLine();
 		}
 

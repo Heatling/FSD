@@ -16,6 +16,8 @@ namespace RINGSDrawing
 			}
 		}
 
+		//Evaluations
+
 		/// <summary>
 		/// Gets the average of the size of each file as a fraction of its depth.
 		/// </summary>
@@ -44,33 +46,6 @@ namespace RINGSDrawing
 			return sizeOverDepthSum/fileSizes.Count();
 		}
 
-		/// <summary>
-		/// If the given node is a file, extracts its radius and adds the given depth to the depth list.
-		/// If it is a directory, recursively calls itself for each of its children.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <param name="addToSizes"></param>
-		/// <param name="addToDepths"></param>
-		/// <param name="depthToAdd"></param>
-		public static void addFilesToList(CircleNode layout, List<double> addToSizes, List<int> addToDepths, int depthToAdd)
-		{
-			if(layout.GetChildren().Count() > 0)
-			{
-				foreach(CircleNode n in layout.GetChildren())
-				{
-					addFilesToList(n, addToSizes, addToDepths, depthToAdd+1);
-				}
-			}
-			else
-			{
-				if (layout.SourceTag.Properties["type"].Equals("file"))
-				{
-					addToSizes.Add(layout.CircleValue.Radius);
-					addToDepths.Add(depthToAdd);
-				}
-			}
-		}
-
 		public static double getMedianFileRadiusOverDepth(CircleNode layout)
 		{
 			List<double> fileSizes = new List<double>();
@@ -97,6 +72,72 @@ namespace RINGSDrawing
 			sizeOverDepth.Sort();
 
 			return sizeOverDepth.ElementAt((sizeOverDepth.Count() / 2)-1);
+		}
+
+		public static double getStaticnessAverage(CircleNode layout)
+		{
+			List<int> nodeStaticness = new List<int>();
+
+			if(layout.GetChildren().Count() > 0)
+			{
+				calculateMutualStaticness((CircleNode[])layout.GetChildren(), nodeStaticness);
+			}
+			else
+			{
+				return -1;
+			}
+
+			double sum = 0;
+			foreach(int t in nodeStaticness)
+			{
+				sum += t;
+			}
+			return sum / nodeStaticness.Count();
+		}
+
+		//Helper methods
+		public static void calculateMutualStaticness(CircleNode[] siblings, List<int> resultStore)
+		{
+			RINGS.sortByNumberOfChildrenLargestFirst(siblings);
+
+			for(int i = 1; i<siblings.Count(); i++)
+			{
+				resultStore.Add(siblings.ElementAt(i - 1).SourceTag.NumberOfChildren() 
+						- siblings.ElementAt(i).SourceTag.NumberOfChildren());
+			}
+
+			foreach(CircleNode s in siblings)
+			{
+				calculateMutualStaticness((CircleNode[])s.GetChildren(), resultStore);
+			}
+		}
+
+
+		/// <summary>
+		/// If the given node is a file, extracts its radius and adds the given depth to the depth list.
+		/// If it is a directory, recursively calls itself for each of its children.
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <param name="addToSizes"></param>
+		/// <param name="addToDepths"></param>
+		/// <param name="depthToAdd"></param>
+		public static void addFilesToList(CircleNode layout, List<double> addToSizes, List<int> addToDepths, int depthToAdd)
+		{
+			if (layout.GetChildren().Count() > 0)
+			{
+				foreach (CircleNode n in layout.GetChildren())
+				{
+					addFilesToList(n, addToSizes, addToDepths, depthToAdd + 1);
+				}
+			}
+			else
+			{
+				if (layout.SourceTag.Properties["type"].Equals("file"))
+				{
+					addToSizes.Add(layout.CircleValue.Radius);
+					addToDepths.Add(depthToAdd);
+				}
+			}
 		}
 
 	}
