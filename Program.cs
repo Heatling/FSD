@@ -90,6 +90,8 @@ namespace RINGSDrawing
 			Console.WriteLine("File size (radius) over depth median: " + fileSizeOverDepthMedian);
 			double staticnessAverage = Evaluations.getStaticnessAverage(layout);
 			Console.WriteLine("Staticness Average: " + staticnessAverage);
+			double staticnessMedian = Evaluations.getStaticnessMedian(layout);
+			Console.WriteLine("Staticness Median: " + staticnessMedian);
 			Console.ReadLine();
 		}
 		
@@ -109,6 +111,9 @@ namespace RINGSDrawing
 
 			double staticnessAverage = Evaluations.getStaticnessAverage(layout);
 			Console.WriteLine("Staticness Average: " + staticnessAverage);
+
+			double staticnessMedian = Evaluations.getStaticnessMedian(layout);
+			Console.WriteLine("Staticness Median: " + staticnessMedian);
 			Console.ReadLine();
 		}
 

@@ -95,6 +95,23 @@ namespace RINGSDrawing
 			return sum / nodeStaticness.Count();
 		}
 
+		public static double getStaticnessMedian(CircleNode layout)
+		{
+			List<int> nodeStaticness = new List<int>();
+
+			if (layout.GetChildren().Count() > 0)
+			{
+				calculateMutualStaticness((CircleNode[])layout.GetChildren(), nodeStaticness);
+			}
+			else
+			{
+				return -1;
+			}
+			nodeStaticness.Sort();
+
+			return nodeStaticness.ElementAt(nodeStaticness.Count() / 2);
+		}
+
 		//Helper methods
 		public static void calculateMutualStaticness(CircleNode[] siblings, List<int> resultStore)
 		{
