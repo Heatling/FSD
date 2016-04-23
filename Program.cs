@@ -11,8 +11,9 @@ namespace RINGSDrawing
 		static void Main(string[] args)
 		{
 			//t4Main(args);
-			t5Main(args);
-						
+			//t5Main(args);
+			evaluateFS_SS_15_03_16();	
+			//evaluateFig2Complete();	
 		}
 		
 		/// <summary>
@@ -58,7 +59,7 @@ namespace RINGSDrawing
 		{
 
 			Tag r = XMLReaderToTree.extractDirectory(
-				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS MOM 20-04-16.xml", "");
 
 			//printTagAndChildren(r, 0);
 			int drawingSize =8000;
@@ -71,6 +72,53 @@ namespace RINGSDrawing
 			f.DrawAllCircles(layout);
 			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.png");
 			Console.ReadLine();
+
+		}
+
+
+		public static void evaluateFS_SS_15_03_16()
+		{
+			Tag r = XMLReaderToTree.extractDirectory(
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
+			int drawingSize = 8000;
+			Console.WriteLine("Loaded tree.");
+			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
+			Console.WriteLine("Created layout.");
+			evaluateLayout(layout);
+			Console.ReadLine();
+		}
+		
+		public static void evaluateFig2Complete()
+		{
+			Tag r = XMLReaderToTree.extractDirectory(
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\RINGS-fig2-complete.xml", "");
+			int drawingSize = 8000;
+			Console.WriteLine("Loaded tree.");
+			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
+			Console.WriteLine("Created layout:");
+
+			evaluateLayout(layout);
+			Console.ReadLine();
+		}
+
+		public static void evaluateLayout(CircleNode layout)
+		{
+			double fileSizeOverDepthAverage = Evaluations.getAvarageFileRadiusOverDepth(layout);
+			Console.WriteLine("File size (radius) over depth average: " + fileSizeOverDepthAverage);
+
+			double fileSizeOverDepthMedian = Evaluations.getMedianFileRadiusOverDepth(layout);
+			Console.WriteLine("File size (radius) over depth median: " + fileSizeOverDepthMedian);
+
+			double staticnessAverage = Evaluations.getStaticnessAverage(layout);
+			Console.WriteLine("Staticness Average: " + staticnessAverage);
+
+			double staticnessMedian = Evaluations.getStaticnessMedian(layout);
+			Console.WriteLine("Staticness Median: " + staticnessMedian);
+
+			double valueSizeDistancesAverage = Evaluations.distanceBetweenRelativeValueAndSizeAverage(layout);
+			Console.WriteLine("Value/Size distances average: " + valueSizeDistancesAverage);
+			double valueSizeDistancesMedian = Evaluations.distanceBetweenRelativeValueAndSizeMedian(layout);
+			Console.WriteLine("Value/Size distances median: " + valueSizeDistancesMedian);
 
 		}
 

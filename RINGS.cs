@@ -134,7 +134,7 @@ namespace RINGSDrawing
 		/// The size of a node is specified by the number of direct children it has.
 		/// </summary>
 		/// <param name="nodes"></param>
-		static void sortByNumberOfChildrenLargestFirst(Node[] nodes)
+		public static void sortByNumberOfChildrenLargestFirst(Node[] nodes)
 		{
 			Array.Sort(nodes, delegate (Node x, Node y) {
 				return x.NumberOfChildren() - y.NumberOfChildren();
@@ -204,7 +204,7 @@ namespace RINGSDrawing
 		/// <param name="firstNode"></param>
 		/// <param name="lastNodeExclusive"></param>
 		/// <returns></returns>
-		static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
+		public static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
 		{
 			int sum = 0;
 			for(int i = firstNode; i<lastNodeExclusive; i++)
