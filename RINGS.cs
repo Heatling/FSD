@@ -137,7 +137,7 @@ namespace RINGSDrawing
 		public static void sortByNumberOfChildrenLargestFirst(Node[] nodes)
 		{
 			Array.Sort(nodes, delegate (Node x, Node y) {
-				return x.NumberOfChildren() - y.NumberOfChildren();
+				return x.NumberOfDecendents() - y.NumberOfDecendents();
 			});
 			Array.Reverse(nodes);
 
@@ -197,31 +197,13 @@ namespace RINGSDrawing
 		}
 
 		/// <summary>
-		/// Summates the total number of direct children of the given
-		/// list of nodes.
-		/// </summary>
-		/// <param name="nodes"></param>
-		/// <param name="firstNode"></param>
-		/// <param name="lastNodeExclusive"></param>
-		/// <returns></returns>
-		public static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
-		{
-			int sum = 0;
-			for(int i = firstNode; i<lastNodeExclusive; i++)
-			{
-				sum += nodes[i].NumberOfChildren();
-			}
-			return sum;
-		}
-
-		/// <summary>
 		/// Calculates the sum of total decendents of the chosed nodes.
 		/// </summary>
 		/// <param name="nodes"></param>
 		/// <param name="firstNode"></param>
 		/// <param name="lastNodeExclusive"></param>
 		/// <returns></returns>
-		static int numberOfDecendents(Node[] nodes, int firstNode, int lastNodeExclusive)
+		public static int numberOfDecendents(Node[] nodes, int firstNode, int lastNodeExclusive)
 		{
 			int sum = 0;
 			for(int i = firstNode; i<lastNodeExclusive; i++)

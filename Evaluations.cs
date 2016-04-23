@@ -157,7 +157,7 @@ namespace RINGSDrawing
 			//Sort by child size
 			Array.Sort(siblings, delegate (CircleNode x, CircleNode y)
 			{
-				return x.SourceTag.NumberOfChildren() - y.SourceTag.NumberOfChildren();
+				return x.SourceTag.NumberOfDecendents() - y.SourceTag.NumberOfDecendents();
 			});
 			Array.Reverse(siblings);
 
@@ -186,7 +186,7 @@ namespace RINGSDrawing
 				//Count children in level
 				ChildrenInLevel.Add(currentLevelEndIndexExclusive - currentLevelstartIndex);
 
-				int totalChildren = RINGS.numberOfChildren(siblingTags, 0, siblingTags.Count());
+				int totalChildren = RINGS.numberOfDecendents(siblingTags, 0, siblingTags.Count());
 
 				for (int i = currentLevelstartIndex; i<currentLevelEndIndexExclusive; i++)
 				{
@@ -198,7 +198,7 @@ namespace RINGSDrawing
 					}
 					else
 					{
-						relativeValue = (double)RINGS.numberOfChildren(siblingTags, i, i + 1) / (double)totalChildren;
+						relativeValue = (double)RINGS.numberOfDecendents(siblingTags, i, i + 1) / (double)totalChildren;
 					}
 					//calculate relative size
 					
@@ -246,8 +246,8 @@ namespace RINGSDrawing
 
 			for(int i = 1; i<siblings.Count(); i++)
 			{
-				resultStore.Add(siblings.ElementAt(i - 1).SourceTag.NumberOfChildren() 
-						- siblings.ElementAt(i).SourceTag.NumberOfChildren());
+				resultStore.Add(siblings.ElementAt(i - 1).SourceTag.NumberOfDecendents() 
+						- siblings.ElementAt(i).SourceTag.NumberOfDecendents());
 			}
 
 			foreach(CircleNode s in siblings)
