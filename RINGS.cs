@@ -204,7 +204,7 @@ namespace RINGSDrawing
 		/// <param name="firstNode"></param>
 		/// <param name="lastNodeExclusive"></param>
 		/// <returns></returns>
-		static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
+		public static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
 		{
 			int sum = 0;
 			for(int i = firstNode; i<lastNodeExclusive; i++)

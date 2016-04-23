@@ -112,7 +112,134 @@ namespace RINGSDrawing
 			return nodeStaticness.ElementAt(nodeStaticness.Count() / 2);
 		}
 
+		public static double distanceBetweenRelativeValueAndSizeAverage(CircleNode layout)
+		{
+			List<double> distances = new List<double>();
+
+			if(layout.GetChildren().Count()  > 0)
+			{
+				calculateDistanceBetweenRelativeValueAndSize((CircleNode[])layout.GetChildren(), distances);
+			}
+			else
+			{
+				return -1;
+			}
+
+			double sum = 0;
+			for(int i= 0; i < distances.Count(); i++)
+			{
+				sum += distances.ElementAt(i);
+			}
+			return sum / distances.Count();
+		}
+
+		public static double distanceBetweenRelativeValueAndSizeMedian(CircleNode layout)
+		{
+			List<double> distances = new List<double>();
+
+			if (layout.GetChildren().Count() > 0)
+			{
+				calculateDistanceBetweenRelativeValueAndSize((CircleNode[])layout.GetChildren(), distances);
+			}
+			else
+			{
+				return -1;
+			}
+			distances.Sort();
+
+			return distances.ElementAt(distances.Count() / 2);
+		}
+
 		//Helper methods
+		public static void calculateDistanceBetweenRelativeValueAndSize(CircleNode[] siblings, List<double> resultStore)
+		{
+			
+			//Sort by child size
+			Array.Sort(siblings, delegate (CircleNode x, CircleNode y)
+			{
+				return x.SourceTag.NumberOfChildren() - y.SourceTag.NumberOfChildren();
+			});
+			Array.Reverse(siblings);
+
+			//Extract tags
+			Tag[] siblingTags = new Tag[siblings.Count()];
+			for (int i=0; i<siblings.Count(); i++)
+			{
+				siblingTags[i] = siblings[i].SourceTag;
+			}
+			if(siblingTags.Count() != siblings.Count())
+			{
+				throw new EvaluationException("calculateDistancesBetweenRelativevalueAndSize: tag array not correct length");
+			}
+
+			List<int> ChildrenInLevel = new List<int>();
+
+			int index = 0;
+			while(index < siblings.Count())
+			{
+				double currentLevelChildRadius = siblings[index].CircleValue.Radius;
+				int currentLevelstartIndex = index;
+				int currentLevelEndIndexExclusive;
+				//Find all children in level
+				for (currentLevelEndIndexExclusive = index + 1; currentLevelEndIndexExclusive<siblings.Count() && currentLevelChildRadius == siblings[currentLevelEndIndexExclusive].CircleValue.Radius; currentLevelEndIndexExclusive++) { }
+
+				//Count children in level
+				ChildrenInLevel.Add(currentLevelEndIndexExclusive - currentLevelstartIndex);
+
+				int totalChildren = RINGS.numberOfChildren(siblingTags, 0, siblingTags.Count());
+
+				for (int i = currentLevelstartIndex; i<currentLevelEndIndexExclusive; i++)
+				{
+					int k = ChildrenInLevel.Last();
+					double relativeValue;
+					if (totalChildren < 1)
+					{
+						relativeValue = 1.0 / (double) siblings.Count();
+					}
+					else
+					{
+						relativeValue = (double)RINGS.numberOfChildren(siblingTags, i, i + 1) / (double)totalChildren;
+					}
+					//calculate relative size
+					
+					double relativeSize ;
+					relativeSize = 1;
+					for(int j = 0; j<ChildrenInLevel.Count()-1;j++)
+					{
+						relativeSize *= RINGS.areaLeftInCenter(
+							ChildrenInLevel.ElementAt(j));
+					}
+					if(k == 1)
+					{
+						relativeSize *= 0.9;
+					}
+					else
+					{
+						relativeSize *= (1 - RINGS.areaLeftInCenter(k)) / k;
+					}
+					
+					
+					if (relativeValue > relativeSize)
+					{
+						resultStore.Add(relativeValue - relativeSize);
+					}
+					else
+					{
+						resultStore.Add(relativeSize - relativeValue);
+					}
+					
+				}
+				index = currentLevelEndIndexExclusive;
+			}
+			foreach (CircleNode s in siblings)
+			{
+				if (s.GetChildren().Count() > 0)
+				{
+					calculateDistanceBetweenRelativeValueAndSize((CircleNode[])s.GetChildren(), resultStore);
+				}
+			}
+		}
+
 		public static void calculateMutualStaticness(CircleNode[] siblings, List<int> resultStore)
 		{
 			RINGS.sortByNumberOfChildrenLargestFirst(siblings);
@@ -128,7 +255,6 @@ namespace RINGSDrawing
 				calculateMutualStaticness((CircleNode[])s.GetChildren(), resultStore);
 			}
 		}
-
 
 		/// <summary>
 		/// If the given node is a file, extracts its radius and adds the given depth to the depth list.
