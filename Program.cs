@@ -11,8 +11,8 @@ namespace RINGSDrawing
 		static void Main(string[] args)
 		{
 			//t4Main(args);
-			//t5Main(args);
-			evaluateFS_SS_15_03_16();	
+			t5Main(args);
+			//evaluateFS_SS_15_03_16();	
 			//evaluateFig2Complete();	
 		}
 		
@@ -59,7 +59,7 @@ namespace RINGSDrawing
 		{
 
 			Tag r = XMLReaderToTree.extractDirectory(
-				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS MOM 20-04-16.xml", "");
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS ZEINA 24-04-16.xml", "");
 
 			//printTagAndChildren(r, 0);
 			int drawingSize =8000;
