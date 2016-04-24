@@ -38,7 +38,7 @@ namespace RINGSDrawing
 		/// <param name="root">The tree to draw</param>
 		/// <param name="size">The size of the layout</param>
 		/// <returns></returns>
-		public static CircleNode MakeLayout(Node root, double size)
+		public static CircleNode MakeLayout(Tag root, double size)
 		{
 			CircleNode layout;
 			double origin = size;
@@ -50,7 +50,7 @@ namespace RINGSDrawing
 				tempRootPos = new Circle(origin, origin, origin);
 				//Console.WriteLine("Root position: "+tempRootPos);
 				drawn++;
-				layout = new CircleNode(tempRootPos,
+				layout = new CircleNode(tempRootPos, null,
 					DrawChildrenOfNode(root, origin, origin, origin));
 				return layout;
 			}
@@ -66,15 +66,15 @@ namespace RINGSDrawing
 		/// <param name="centerY"></param>
 		/// <param name="radius"></param>
 		/// <returns></returns>
-		static CircleNode[] DrawChildrenOfNode(Node node, double centerX, double centerY, double radius)
+		static CircleNode[] DrawChildrenOfNode(Tag node, double centerX, double centerY, double radius)
 		{
 			Console.WriteLine("Layout progress: " + (++drawn * 100) / maxDraw);
-			if (radius < 1)
+			/*if (radius < 1)
 			{
 				return new CircleNode[] { };
-			}
+			}*/
 			int childrenDrawn = 0;
-			Node[] children = node.GetChildren();
+			Tag[] children = (Tag[])node.GetChildren();
 			CircleNode[] childrenCircleNodes = new CircleNode[children.Length];
 			//Console.WriteLine("Number of children: " + children.Length);
 			int tempMaxChildrenInLevel;
@@ -100,7 +100,7 @@ namespace RINGSDrawing
 							radius*0.9);
 						//Console.WriteLine("Circle: " + c);
 						childrenCircleNodes[i + childrenDrawn] =
-							new CircleNode(c,
+							new CircleNode(c, children[i + childrenDrawn],
 								DrawChildrenOfNode(children[i + childrenDrawn],
 												c.CenterX, c.CenterY, c.Radius));
 					}
@@ -114,7 +114,7 @@ namespace RINGSDrawing
 								childRadius);
 						//Console.WriteLine("Circle: " + c);
 						childrenCircleNodes[i + childrenDrawn] =
-							new CircleNode(c,
+							new CircleNode(c, children[i + childrenDrawn],
 								DrawChildrenOfNode(children[i + childrenDrawn],
 												c.CenterX, c.CenterY, c.Radius));
 					}
@@ -134,7 +134,7 @@ namespace RINGSDrawing
 		/// The size of a node is specified by the number of direct children it has.
 		/// </summary>
 		/// <param name="nodes"></param>
-		static void sortByNumberOfChildrenLargestFirst(Node[] nodes)
+		public static void sortByNumberOfChildrenLargestFirst(Node[] nodes)
 		{
 			Array.Sort(nodes, delegate (Node x, Node y) {
 				return x.NumberOfChildren() - y.NumberOfChildren();
@@ -166,12 +166,12 @@ namespace RINGSDrawing
 		{
 			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length + 
 			//"], firstChild[" + firstChild + "]");
-			double tempAreaTaken, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
+			double tempAreaLeftInCenter, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
 			for (int i = 3; i<nodes.Length-firstChild; i++)
 			{
-				//Console.WriteLine("Area taken: i = " + i);
-				tempAreaTaken = areaLeftInCenter(i);
-				//Console.WriteLine("Area taken: tempAreaTaken = " + tempAreaTaken);
+				//Console.WriteLine("i = " + i);
+				tempAreaLeftInCenter = areaLeftInCenter(i);
+				//Console.WriteLine("tempAreaLeftInCenter = " + tempAreaLeftInCenter);
 
 				tempChildrenOfLevel = (double)numberOfChildren(nodes, firstChild, firstChild + i);
 				//Console.WriteLine("Children of level = " + tempChildrenOfLevel);
@@ -187,7 +187,7 @@ namespace RINGSDrawing
 				tempChildDecendentFraction = tempChildrenOfLevel / tempTotalChildren;
 
 				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
-				if (tempChildDecendentFraction >= 1.0 - tempAreaTaken)
+				if (tempChildDecendentFraction >= 1.0 - tempAreaLeftInCenter)
 				{
 					return i;
 				}
@@ -204,7 +204,7 @@ namespace RINGSDrawing
 		/// <param name="firstNode"></param>
 		/// <param name="lastNodeExclusive"></param>
 		/// <returns></returns>
-		static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
+		public static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
 		{
 			int sum = 0;
 			for(int i = firstNode; i<lastNodeExclusive; i++)
