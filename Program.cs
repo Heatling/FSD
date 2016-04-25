@@ -11,9 +11,10 @@ namespace RINGSDrawing
 		static void Main(string[] args)
 		{
 			//t4Main(args);
-			t5Main(args);
+			//t5Main(args);
 			//evaluateFS_SS_15_03_16();	
 			//evaluateFig2Complete();	
+			evaluateScreenshots();
 		}
 		
 		/// <summary>
@@ -98,6 +99,34 @@ namespace RINGSDrawing
 			Console.WriteLine("Created layout:");
 
 			evaluateLayout(layout);
+			Console.ReadLine();
+		}
+
+		public static void evaluateScreenshots()
+		{
+			string screenshotPath = @"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots";
+			string[] screenshots = new string[] {
+				"FS SS 15-03-16",
+				"FS SS MOM",
+				"FS SS ZEINA"
+			};
+
+			int drawingSize = 800;
+			Tag r;
+			CircleNode[] layouts = new CircleNode[screenshots.Length];
+
+			for (int i = 0; i<screenshots.Length; i++)
+			{
+				r = XMLReaderToTree.extractDirectory(
+				screenshotPath+"\\" + screenshots[i] +".xml", "");
+				layouts[i]  = RINGS.MakeLayout(r, drawingSize);
+			}
+
+			for(int i=0; i<layouts.Length; i++)
+			{
+				Console.WriteLine("Evaluation of '" + screenshots[i] + "':");
+				evaluateLayout(layouts[i]);
+			}
 			Console.ReadLine();
 		}
 
