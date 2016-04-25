@@ -93,9 +93,12 @@ namespace RINGSDrawing
 					reader.MoveToContent();
 					if (reader.IsStartElement())
 					{
-						return extractTreeFromXML(reader.ReadSubtree());
+						Tag r = extractTreeFromXML(reader.ReadSubtree());
+						reader.Dispose();
+						return r;
 					}
 				}
+				reader.Dispose();
 				throw new XMLMismatchException("XML file not formatted correctly.", reader);
 			}
 		}
