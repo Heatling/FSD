@@ -11,10 +11,10 @@ namespace RINGSDrawing
 		static void Main(string[] args)
 		{
 			//t4Main(args);
-			t5Main(args);
+			//t5Main(args);
 			//evaluateFS_SS_15_03_16();	
 			//evaluateFig2Complete();	
-			//evaluateScreenshots();
+			evaluateScreenshots();
 		}
 		
 		/// <summary>
