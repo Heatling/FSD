@@ -76,7 +76,6 @@ namespace RINGSDrawing
 
 		}
 
-
 		public static void evaluateFS_SS_15_03_16()
 		{
 			Tag r = XMLReaderToTree.extractDirectory(
@@ -85,7 +84,12 @@ namespace RINGSDrawing
 			Console.WriteLine("Loaded tree.");
 			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout.");
-			evaluateLayout(layout);
+			using (System.IO.StreamWriter file =
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-FS SS 15-03-16.txt", false))
+			{
+				evaluateLayout(layout, file);
+			}
+			Console.Write("DONE");
 			Console.ReadLine();
 		}
 		
@@ -97,8 +101,12 @@ namespace RINGSDrawing
 			Console.WriteLine("Loaded tree.");
 			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout:");
-
-			evaluateLayout(layout);
+			using (System.IO.StreamWriter file =
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-Fig2Complete.txt", false))
+			{
+				evaluateLayout(layout, file);
+			}
+			Console.Write("DONE");
 			Console.ReadLine();
 		}
 
@@ -121,33 +129,40 @@ namespace RINGSDrawing
 				screenshotPath+"\\" + screenshots[i] +".xml", "");
 				layouts[i]  = RINGS.MakeLayout(r, drawingSize);
 			}
-
-			for(int i=0; i<layouts.Length; i++)
+			using (System.IO.StreamWriter file =
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-master-all.txt", false))
 			{
-				Console.WriteLine("Evaluation of '" + screenshots[i] + "':");
-				evaluateLayout(layouts[i]);
+				for (int i = 0; i < layouts.Length; i++)
+				{
+					file.WriteLine("Evaluation of '" + screenshots[i] + "':");
+					evaluateLayout(layouts[i], file);
+					file.WriteLine();
+				}
 			}
+			Console.Write("DONE");
 			Console.ReadLine();
 		}
 
-		public static void evaluateLayout(CircleNode layout)
+		public static void evaluateLayout(CircleNode layout, StreamWriter resultOutput)
 		{
 			double fileSizeOverDepthAverage = Evaluations.getAvarageFileRadiusOverDepth(layout);
-			Console.WriteLine("File size (radius) over depth average: " + fileSizeOverDepthAverage);
-
-			double fileSizeOverDepthMedian = Evaluations.getMedianFileRadiusOverDepth(layout);
-			Console.WriteLine("File size (radius) over depth median: " + fileSizeOverDepthMedian);
-
+			double[] fileSizeOverDepthQuantiles = Evaluations.getMedianFileRadiusOverDepth(layout);
+			
 			double staticnessAverage = Evaluations.getStaticnessAverage(layout);
-			Console.WriteLine("Staticness Average: " + staticnessAverage);
-
-			double staticnessMedian = Evaluations.getStaticnessMedian(layout);
-			Console.WriteLine("Staticness Median: " + staticnessMedian);
+			double[] staticnessQuantile = Evaluations.getStaticnessMedian(layout);
 
 			double valueSizeDistancesAverage = Evaluations.distanceBetweenRelativeValueAndSizeAverage(layout);
-			Console.WriteLine("Value/Size distances average: " + valueSizeDistancesAverage);
-			double valueSizeDistancesMedian = Evaluations.distanceBetweenRelativeValueAndSizeMedian(layout);
-			Console.WriteLine("Value/Size distances median: " + valueSizeDistancesMedian);
+			double[] valueSizeDistancesQuantiles = Evaluations.distanceBetweenRelativeValueAndSizeMedian(layout);
+
+			string average = "average";
+			string[] quantiles = new string[] { "Min", "Q1", "Q2", "Q3", "Max" };
+
+			resultOutput.WriteLine("Size over Depth\tStaticness\tValue/size distance");
+			for(int i = 0; i<5; i++)
+			{
+				resultOutput.WriteLine(fileSizeOverDepthQuantiles[i] + "\t" + staticnessQuantile[i] + "\t" + valueSizeDistancesQuantiles[i]);
+			}
+			resultOutput.WriteLine(fileSizeOverDepthAverage + "\t" + staticnessAverage + "\t" + valueSizeDistancesAverage);
 
 		}
 
@@ -175,6 +190,16 @@ namespace RINGSDrawing
 			}
 
 			Console.WriteLine(t + "}");
+		}
+
+		public static string arrayValuesToString(double[] array)
+		{
+			string result = "[";
+			for(int i = 0; i<array.Length;i++)
+			{
+				result += array[i] + ", ";
+			}
+			return result.Substring(0, result.Length - 2)+"]";
 		}
 
 	}

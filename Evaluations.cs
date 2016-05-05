@@ -46,7 +46,7 @@ namespace RINGSDrawing
 			return sizeOverDepthSum/fileSizes.Count();
 		}
 
-		public static double getMedianFileRadiusOverDepth(CircleNode layout)
+		public static double[] getMedianFileRadiusOverDepth(CircleNode layout)
 		{
 			List<double> fileSizes = new List<double>();
 			List<int> depths = new List<int>();
@@ -71,7 +71,13 @@ namespace RINGSDrawing
 			}
 			sizeOverDepth.Sort();
 
-			return sizeOverDepth.ElementAt((sizeOverDepth.Count() / 2)-1);
+			return new double[] {
+				sizeOverDepth.ElementAt(0),
+				sizeOverDepth.ElementAt(sizeOverDepth.Count()/4),
+				sizeOverDepth.ElementAt(sizeOverDepth.Count()/2),
+				sizeOverDepth.ElementAt((int)(sizeOverDepth.Count()*0.75)),
+				sizeOverDepth.ElementAt(sizeOverDepth.Count()-1)
+			};
 		}
 
 		public static double getStaticnessAverage(CircleNode layout)
@@ -95,7 +101,7 @@ namespace RINGSDrawing
 			return sum / nodeStaticness.Count();
 		}
 
-		public static double getStaticnessMedian(CircleNode layout)
+		public static double[] getStaticnessMedian(CircleNode layout)
 		{
 			List<int> nodeStaticness = new List<int>();
 
@@ -105,11 +111,17 @@ namespace RINGSDrawing
 			}
 			else
 			{
-				return -1;
+				return null;
 			}
 			nodeStaticness.Sort();
-
-			return nodeStaticness.ElementAt(nodeStaticness.Count() / 2);
+			
+			return new double[] {
+				nodeStaticness.ElementAt(0),
+				nodeStaticness.ElementAt(nodeStaticness.Count()/4),
+				nodeStaticness.ElementAt(nodeStaticness.Count()/2),
+				nodeStaticness.ElementAt((int)(nodeStaticness.Count()*0.75)),
+				nodeStaticness.ElementAt(nodeStaticness.Count()-1)
+			};
 		}
 
 		public static double distanceBetweenRelativeValueAndSizeAverage(CircleNode layout)
@@ -133,7 +145,7 @@ namespace RINGSDrawing
 			return sum / distances.Count();
 		}
 
-		public static double distanceBetweenRelativeValueAndSizeMedian(CircleNode layout)
+		public static double[] distanceBetweenRelativeValueAndSizeMedian(CircleNode layout)
 		{
 			List<double> distances = new List<double>();
 
@@ -143,11 +155,18 @@ namespace RINGSDrawing
 			}
 			else
 			{
-				return -1;
+				return null;
 			}
 			distances.Sort();
+			
+			return new double[] {
+				distances.ElementAt(0),
+				distances.ElementAt(distances.Count()/4),
+				distances.ElementAt(distances.Count()/2),
+				distances.ElementAt((int)(distances.Count()*0.75)),
+				distances.ElementAt(distances.Count()-1)
+			};
 
-			return distances.ElementAt(distances.Count() / 2);
 		}
 
 		//Helper methods
