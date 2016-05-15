@@ -87,7 +87,17 @@ namespace RINGSDrawing
 			using (System.IO.StreamWriter file =
 			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-FS SS 15-03-16.txt", false))
 			{
-				evaluateLayout(layout, file);
+				file.WriteLine("File size\tStaticness\tValue/size distance");
+				double[][] eval = evaluateLayout(layout);
+				for (int i = 0; i < 6; i++)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						file.Write(eval[j][i]);
+						file.Write("\t");
+					}
+					file.Write("\n");
+				}
 			}
 			Console.Write("DONE");
 			Console.ReadLine();
@@ -104,7 +114,17 @@ namespace RINGSDrawing
 			using (System.IO.StreamWriter file =
 			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-Fig2Complete.txt", false))
 			{
-				evaluateLayout(layout, file);
+				file.WriteLine("File size\tStaticness\tValue/size distance");
+				double[][] eval = evaluateLayout(layout);
+				for(int i = 0; i<6; i++)
+				{ 
+					for (int j =0; j<3; j++)
+					{
+						file.Write(eval[j][i]);
+						file.Write("\t");
+					}
+					file.Write("\n");
+				}
 			}
 			Console.Write("DONE");
 			Console.ReadLine();
@@ -116,54 +136,85 @@ namespace RINGSDrawing
 			string[] screenshots = new string[] {
 				"FS SS 15-03-16",
 				"FS SS MOM",
-				"FS SS ZEINA"
+				"FS SS ZEINA",
+				"FS SS STAT",
+				"FS SS BABA"
 			};
 
-			int drawingSize = 800;
+			int drawingSize = 8000;
 			Tag r;
 			CircleNode[] layouts = new CircleNode[screenshots.Length];
+			double[][][] evaluations = new double[screenshots.Length][][];
 
 			for (int i = 0; i<screenshots.Length; i++)
 			{
 				r = XMLReaderToTree.extractDirectory(
 				screenshotPath+"\\" + screenshots[i] +".xml", "");
 				layouts[i]  = RINGS.MakeLayout(r, drawingSize);
+				evaluations[i] = evaluateLayout(layouts[i]);
 			}
+
+			double[][] compiledEvaluation = new double[3][];
+			for(int i = 0; i<compiledEvaluation.Length; i++)
+			{
+				compiledEvaluation[i] = new double[6];
+			}
+
+			for(int i = 0; i<compiledEvaluation.Length; i++)
+			{
+				for(int j = 0; j<compiledEvaluation[0].Length; j++)
+				{
+					double sum = 0;
+					for(int k = 0; k<evaluations.Length; k++)
+					{
+						sum += evaluations[k][i][j];
+					}
+					compiledEvaluation[i][j] = sum / evaluations.Length;
+				}
+			}
+
 			using (System.IO.StreamWriter file =
 			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-LessThanOneMinusF-all.txt", false))
 			{
-				for (int i = 0; i < layouts.Length; i++)
+				file.WriteLine("File size\tStaticness\tValue/size distance");
+				for (int i = 0; i < compiledEvaluation[0].Length; i++)
 				{
-					file.WriteLine("Evaluation of '" + screenshots[i] + "':");
-					evaluateLayout(layouts[i], file);
-					file.WriteLine();
+					for (int j = 0; j < compiledEvaluation.Length; j++)
+					{
+						file.Write(compiledEvaluation[j][i]);
+						file.Write("\t");
+					}
+					file.Write("\n");
 				}
 			}
 			Console.Write("DONE");
 			Console.ReadLine();
 		}
 
-		public static void evaluateLayout(CircleNode layout, StreamWriter resultOutput)
+		/// <summary>
+		/// Returns the evaluation results of the given layout.
+		/// The results are formatted as follows:
+		/// results[0] is file size results
+		/// results[1] is staticness results
+		/// results[3] is value/size distance results
+		/// results[x][0] is the minimum
+		/// results[x][1] is the first quantile (25%)
+		/// results[x][2] is the second quantile (50% or median)
+		/// results[x][3] is the third quantile (75%)
+		/// results[x][4] is the maximum
+		/// results[x][5] is the average
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <returns></returns>
+		public static double[][] evaluateLayout(CircleNode layout)
 		{
-			double fileSizeOverDepthAverage = Evaluations.getAvarageFileRadiusOverDepth(layout);
-			double[] fileSizeOverDepthQuantiles = Evaluations.getMedianFileRadiusOverDepth(layout);
+			double[] fileSizeQuantiles = Evaluations.getEvaluationFileRadius(layout);
 			
-			double staticnessAverage = Evaluations.getStaticnessAverage(layout);
-			double[] staticnessQuantile = Evaluations.getStaticnessMedian(layout);
+			double[] staticnessQuantiles = Evaluations.getEvaluationStaticness(layout);
 
-			double valueSizeDistancesAverage = Evaluations.distanceBetweenRelativeValueAndSizeAverage(layout);
 			double[] valueSizeDistancesQuantiles = Evaluations.distanceBetweenRelativeValueAndSizeMedian(layout);
-
-			string average = "average";
-			string[] quantiles = new string[] { "Min", "Q1", "Q2", "Q3", "Max" };
-
-			resultOutput.WriteLine("Size over Depth\tStaticness\tValue/size distance");
-			for(int i = 0; i<5; i++)
-			{
-				resultOutput.WriteLine(fileSizeOverDepthQuantiles[i] + "\t" + staticnessQuantile[i] + "\t" + valueSizeDistancesQuantiles[i]);
-			}
-			resultOutput.WriteLine(fileSizeOverDepthAverage + "\t" + staticnessAverage + "\t" + valueSizeDistancesAverage);
-
+			
+			return new double[][]{fileSizeQuantiles, staticnessQuantiles, valueSizeDistancesQuantiles };
 		}
 
 		/// <summary>
