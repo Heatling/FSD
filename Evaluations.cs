@@ -17,36 +17,8 @@ namespace RINGSDrawing
 		}
 
 		//Evaluations
-
-		/// <summary>
-		/// Gets the average of the size of each file as a fraction of its depth.
-		/// </summary>
-		/// <param name="layout"></param>
-		/// <returns></returns>
-		public static double getAvarageFileRadiusOverDepth(CircleNode layout)
-		{
-			
-			List<double> fileSizes = new List<double>();
-			List<int> depths = new List<int>();
-
-			addFilesToList(layout, fileSizes, depths, 0);
-
-			if(fileSizes.Count() != depths.Count())
-			{
-				throw new EvaluationException("File sizes and depths dont sync");
-			}
-
-			double sizeOverDepthSum = 0;
-
-			for(int i = 0; i<fileSizes.Count(); i++)
-			{
-				sizeOverDepthSum += fileSizes.ElementAt(i)/depths.ElementAt(i);
-			}
-
-			return sizeOverDepthSum/fileSizes.Count();
-		}
-
-		public static double getMedianFileRadiusOverDepth(CircleNode layout)
+		
+		public static double[] getEvaluationFileRadius(CircleNode layout)
 		{
 			List<double> fileSizes = new List<double>();
 			List<int> depths = new List<int>();
@@ -57,45 +29,27 @@ namespace RINGSDrawing
 			{
 				throw new EvaluationException("File sizes and depths dont sync");
 			}
+			
+			fileSizes.Sort();
 
-			List<double> sizeOverDepth = new List<double>();
+			double sizeSum = 0;
 
-			for(int i = 0; i<fileSizes.Count(); i++)
+			for (int i = 0; i < fileSizes.Count(); i++)
 			{
-				sizeOverDepth.Add(fileSizes.ElementAt(i) / depths.ElementAt(i));
+				sizeSum += fileSizes.ElementAt(i);
 			}
 
-			if(fileSizes.Count() != sizeOverDepth.Count())
-			{
-				throw new EvaluationException("Wrong number of fractions for size over depth");
-			}
-			sizeOverDepth.Sort();
-
-			return sizeOverDepth.ElementAt((sizeOverDepth.Count() / 2)-1);
+			return new double[] {
+				fileSizes.ElementAt(0),
+				fileSizes.ElementAt(fileSizes.Count()/4),
+				fileSizes.ElementAt(fileSizes.Count()/2),
+				fileSizes.ElementAt((int)(fileSizes.Count()*0.75)),
+				fileSizes.ElementAt(fileSizes.Count()-1),
+				sizeSum / fileSizes.Count()
+		};
 		}
-
-		public static double getStaticnessAverage(CircleNode layout)
-		{
-			List<int> nodeStaticness = new List<int>();
-
-			if(layout.GetChildren().Count() > 0)
-			{
-				calculateMutualStaticness((CircleNode[])layout.GetChildren(), nodeStaticness);
-			}
-			else
-			{
-				return -1;
-			}
-
-			double sum = 0;
-			foreach(int t in nodeStaticness)
-			{
-				sum += t;
-			}
-			return sum / nodeStaticness.Count();
-		}
-
-		public static double getStaticnessMedian(CircleNode layout)
+		
+		public static double[] getEvaluationStaticness(CircleNode layout)
 		{
 			List<int> nodeStaticness = new List<int>();
 
@@ -105,35 +59,27 @@ namespace RINGSDrawing
 			}
 			else
 			{
-				return -1;
+				return null;
 			}
 			nodeStaticness.Sort();
 
-			return nodeStaticness.ElementAt(nodeStaticness.Count() / 2);
-		}
-
-		public static double distanceBetweenRelativeValueAndSizeAverage(CircleNode layout)
-		{
-			List<double> distances = new List<double>();
-
-			if(layout.GetChildren().Count()  > 0)
-			{
-				calculateDistanceBetweenRelativeValueAndSize((CircleNode[])layout.GetChildren(), distances);
-			}
-			else
-			{
-				return -1;
-			}
-
 			double sum = 0;
-			for(int i= 0; i < distances.Count(); i++)
+			foreach (int t in nodeStaticness)
 			{
-				sum += distances.ElementAt(i);
+				sum += t;
 			}
-			return sum / distances.Count();
+			
+			return new double[] {
+				nodeStaticness.ElementAt(0),
+				nodeStaticness.ElementAt(nodeStaticness.Count()/4),
+				nodeStaticness.ElementAt(nodeStaticness.Count()/2),
+				nodeStaticness.ElementAt((int)(nodeStaticness.Count()*0.75)),
+				nodeStaticness.ElementAt(nodeStaticness.Count()-1),
+				sum / nodeStaticness.Count()
+			};
 		}
 
-		public static double distanceBetweenRelativeValueAndSizeMedian(CircleNode layout)
+		public static double[] distanceBetweenRelativeValueAndSizeMedian(CircleNode layout)
 		{
 			List<double> distances = new List<double>();
 
@@ -143,11 +89,24 @@ namespace RINGSDrawing
 			}
 			else
 			{
-				return -1;
+				return null;
 			}
 			distances.Sort();
+			double sum = 0;
+			for (int i = 0; i < distances.Count(); i++)
+			{
+				sum += distances.ElementAt(i);
+			}
+			
+			return new double[] {
+				distances.ElementAt(0),
+				distances.ElementAt(distances.Count()/4),
+				distances.ElementAt(distances.Count()/2),
+				distances.ElementAt((int)(distances.Count()*0.75)),
+				distances.ElementAt(distances.Count()-1),
+				sum / distances.Count()
+			};
 
-			return distances.ElementAt(distances.Count() / 2);
 		}
 
 		//Helper methods

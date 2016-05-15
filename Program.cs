@@ -60,7 +60,7 @@ namespace RINGSDrawing
 		{
 
 			Tag r = XMLReaderToTree.extractDirectory(
-				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS ZEINA 24-04-16.xml", "");
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
 
 			//printTagAndChildren(r, 0);
 			int drawingSize =8000;
@@ -76,7 +76,6 @@ namespace RINGSDrawing
 
 		}
 
-
 		public static void evaluateFS_SS_15_03_16()
 		{
 			Tag r = XMLReaderToTree.extractDirectory(
@@ -85,7 +84,22 @@ namespace RINGSDrawing
 			Console.WriteLine("Loaded tree.");
 			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout.");
-			evaluateLayout(layout);
+			using (System.IO.StreamWriter file =
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-FS SS 15-03-16.txt", false))
+			{
+				file.WriteLine("File size\tStaticness\tValue/size distance");
+				double[][] eval = evaluateLayout(layout);
+				for (int i = 0; i < 6; i++)
+				{
+					for (int j = 0; j < 3; j++)
+					{
+						file.Write(eval[j][i]);
+						file.Write("\t");
+					}
+					file.Write("\n");
+				}
+			}
+			Console.Write("DONE");
 			Console.ReadLine();
 		}
 		
@@ -97,8 +111,22 @@ namespace RINGSDrawing
 			Console.WriteLine("Loaded tree.");
 			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout:");
-
-			evaluateLayout(layout);
+			using (System.IO.StreamWriter file =
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-Fig2Complete.txt", false))
+			{
+				file.WriteLine("File size\tStaticness\tValue/size distance");
+				double[][] eval = evaluateLayout(layout);
+				for(int i = 0; i<6; i++)
+				{ 
+					for (int j =0; j<3; j++)
+					{
+						file.Write(eval[j][i]);
+						file.Write("\t");
+					}
+					file.Write("\n");
+				}
+			}
+			Console.Write("DONE");
 			Console.ReadLine();
 		}
 
@@ -108,47 +136,85 @@ namespace RINGSDrawing
 			string[] screenshots = new string[] {
 				"FS SS 15-03-16",
 				"FS SS MOM",
-				"FS SS ZEINA"
+				"FS SS ZEINA",
+				"FS SS STAT",
+				"FS SS BABA"
 			};
 
-			int drawingSize = 800;
+			int drawingSize = 8000;
 			Tag r;
 			CircleNode[] layouts = new CircleNode[screenshots.Length];
+			double[][][] evaluations = new double[screenshots.Length][][];
 
 			for (int i = 0; i<screenshots.Length; i++)
 			{
 				r = XMLReaderToTree.extractDirectory(
 				screenshotPath+"\\" + screenshots[i] +".xml", "");
 				layouts[i]  = RINGS.MakeLayout(r, drawingSize);
+				evaluations[i] = evaluateLayout(layouts[i]);
 			}
 
-			for(int i=0; i<layouts.Length; i++)
+			double[][] compiledEvaluation = new double[3][];
+			for(int i = 0; i<compiledEvaluation.Length; i++)
 			{
-				Console.WriteLine("Evaluation of '" + screenshots[i] + "':");
-				evaluateLayout(layouts[i]);
+				compiledEvaluation[i] = new double[6];
 			}
+
+			for(int i = 0; i<compiledEvaluation.Length; i++)
+			{
+				for(int j = 0; j<compiledEvaluation[0].Length; j++)
+				{
+					double sum = 0;
+					for(int k = 0; k<evaluations.Length; k++)
+					{
+						sum += evaluations[k][i][j];
+					}
+					compiledEvaluation[i][j] = sum / evaluations.Length;
+				}
+			}
+
+			using (System.IO.StreamWriter file =
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-master-all.txt", false))
+			{
+				file.WriteLine("File size\tStaticness\tValue/size distance");
+				for (int i = 0; i < compiledEvaluation[0].Length; i++)
+				{
+					for (int j = 0; j < compiledEvaluation.Length; j++)
+					{
+						file.Write(compiledEvaluation[j][i]);
+						file.Write("\t");
+					}
+					file.Write("\n");
+				}
+			}
+			Console.Write("DONE");
 			Console.ReadLine();
 		}
 
-		public static void evaluateLayout(CircleNode layout)
+		/// <summary>
+		/// Returns the evaluation results of the given layout.
+		/// The results are formatted as follows:
+		/// results[0] is file size results
+		/// results[1] is staticness results
+		/// results[3] is value/size distance results
+		/// results[x][0] is the minimum
+		/// results[x][1] is the first quantile (25%)
+		/// results[x][2] is the second quantile (50% or median)
+		/// results[x][3] is the third quantile (75%)
+		/// results[x][4] is the maximum
+		/// results[x][5] is the average
+		/// </summary>
+		/// <param name="layout"></param>
+		/// <returns></returns>
+		public static double[][] evaluateLayout(CircleNode layout)
 		{
-			double fileSizeOverDepthAverage = Evaluations.getAvarageFileRadiusOverDepth(layout);
-			Console.WriteLine("File size (radius) over depth average: " + fileSizeOverDepthAverage);
+			double[] fileSizeQuantiles = Evaluations.getEvaluationFileRadius(layout);
+			
+			double[] staticnessQuantiles = Evaluations.getEvaluationStaticness(layout);
 
-			double fileSizeOverDepthMedian = Evaluations.getMedianFileRadiusOverDepth(layout);
-			Console.WriteLine("File size (radius) over depth median: " + fileSizeOverDepthMedian);
-
-			double staticnessAverage = Evaluations.getStaticnessAverage(layout);
-			Console.WriteLine("Staticness Average: " + staticnessAverage);
-
-			double staticnessMedian = Evaluations.getStaticnessMedian(layout);
-			Console.WriteLine("Staticness Median: " + staticnessMedian);
-
-			double valueSizeDistancesAverage = Evaluations.distanceBetweenRelativeValueAndSizeAverage(layout);
-			Console.WriteLine("Value/Size distances average: " + valueSizeDistancesAverage);
-			double valueSizeDistancesMedian = Evaluations.distanceBetweenRelativeValueAndSizeMedian(layout);
-			Console.WriteLine("Value/Size distances median: " + valueSizeDistancesMedian);
-
+			double[] valueSizeDistancesQuantiles = Evaluations.distanceBetweenRelativeValueAndSizeMedian(layout);
+			
+			return new double[][]{fileSizeQuantiles, staticnessQuantiles, valueSizeDistancesQuantiles };
 		}
 
 		/// <summary>
@@ -175,6 +241,16 @@ namespace RINGSDrawing
 			}
 
 			Console.WriteLine(t + "}");
+		}
+
+		public static string arrayValuesToString(double[] array)
+		{
+			string result = "[";
+			for(int i = 0; i<array.Length;i++)
+			{
+				result += array[i] + ", ";
+			}
+			return result.Substring(0, result.Length - 2)+"]";
 		}
 
 	}
