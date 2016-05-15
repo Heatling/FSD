@@ -167,6 +167,7 @@ namespace RINGSDrawing
 			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length + 
 			//"], firstChild[" + firstChild + "]");
 			double tempAreaLeftInCenter, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
+			double difference = Double.MaxValue;
 			for (int i = 3; i<nodes.Length-firstChild; i++)
 			{
 				//Console.WriteLine("i = " + i);
@@ -186,10 +187,23 @@ namespace RINGSDrawing
 
 				tempChildDecendentFraction = tempChildrenOfLevel / tempTotalChildren;
 
-				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
-				if (tempChildDecendentFraction >= 1.0 - tempAreaLeftInCenter)
+				double tempDiff;
+				if(tempChildDecendentFraction > (1.0-tempAreaLeftInCenter))
 				{
-					return i;
+					tempDiff = tempChildDecendentFraction - (1.0 - tempAreaLeftInCenter);
+				}
+				else
+				{
+					tempDiff = (1.0 - tempAreaLeftInCenter) - tempChildDecendentFraction;
+				}
+				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
+				if(tempDiff < difference)
+				{
+					difference = tempDiff;
+				}
+				else
+				{
+					return Math.Max(i - 1, 3);
 				}
 			}
 			//Console.WriteLine("No k found, return " + (nodes.Length - firstChild));
