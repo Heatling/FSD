@@ -137,7 +137,7 @@ namespace RINGSDrawing
 		public static void sortByNumberOfChildrenLargestFirst(Node[] nodes)
 		{
 			Array.Sort(nodes, delegate (Node x, Node y) {
-				return x.NumberOfChildren() - y.NumberOfChildren();
+				return x.NumberOfDecendents() - y.NumberOfDecendents();
 			});
 			Array.Reverse(nodes);
 
@@ -164,7 +164,7 @@ namespace RINGSDrawing
 		/// <returns></returns>
 		static int findMaxChildrenInLevel(Node[] nodes, int firstChild)
 		{
-			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length + 
+			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length +
 			//"], firstChild[" + firstChild + "]");
 			double tempAreaLeftInCenter, tempChildDecendentFraction, tempChildrenOfLevel, tempTotalChildren;
 			double difference = Double.MaxValue;
@@ -174,9 +174,9 @@ namespace RINGSDrawing
 				tempAreaLeftInCenter = areaLeftInCenter(i);
 				//Console.WriteLine("tempAreaLeftInCenter = " + tempAreaLeftInCenter);
 
-				tempChildrenOfLevel = (double)numberOfChildren(nodes, firstChild, firstChild + i);
+				tempChildrenOfLevel = (double)numberOfDecendents(nodes, firstChild, firstChild + i);
 				//Console.WriteLine("Children of level = " + tempChildrenOfLevel);
-				tempTotalChildren = (double) numberOfChildren(nodes, firstChild, nodes.Length);
+				tempTotalChildren = (double)numberOfDecendents(nodes, firstChild, nodes.Length);
 				//Console.WriteLine("Total children = " + tempTotalChildren);
 
 				if (tempChildrenOfLevel <= 0 || tempTotalChildren <= 0)
@@ -211,19 +211,18 @@ namespace RINGSDrawing
 		}
 
 		/// <summary>
-		/// Summates the total number of direct children of the given
-		/// list of nodes.
+		/// Calculates the sum of total decendents of the chosed nodes.
 		/// </summary>
 		/// <param name="nodes"></param>
 		/// <param name="firstNode"></param>
 		/// <param name="lastNodeExclusive"></param>
 		/// <returns></returns>
-		public static int numberOfChildren(Node[] nodes, int firstNode, int lastNodeExclusive)
+		public static int numberOfDecendents(Node[] nodes, int firstNode, int lastNodeExclusive)
 		{
 			int sum = 0;
 			for(int i = firstNode; i<lastNodeExclusive; i++)
 			{
-				sum += nodes[i].NumberOfChildren();
+				sum += nodes[i].NumberOfDecendents();
 			}
 			return sum;
 		}
