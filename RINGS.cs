@@ -187,9 +187,9 @@ namespace RINGSDrawing
 				tempChildDecendentFraction = tempChildrenOfLevel / tempTotalChildren;
 
 				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
-				if (tempChildDecendentFraction >= 1.0 - tempAreaLeftInCenter)
+				if (tempChildDecendentFraction > 1.0 - tempAreaLeftInCenter)
 				{
-					return i;
+					return Math.Max(i-1, 3);
 				}
 			}
 			//Console.WriteLine("No k found, return " + (nodes.Length - firstChild));
