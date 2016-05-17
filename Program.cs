@@ -69,7 +69,7 @@ namespace RINGSDrawing
 			Console.WriteLine("Created layout.");
 
 			RINGSForm f = new RINGSForm(drawingSize*2, drawingSize * 2);
-			f.Show();
+			//f.Show();
 			f.DrawAllCircles(layout);
 			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.png");
 			Console.ReadLine();
@@ -174,7 +174,7 @@ namespace RINGSDrawing
 			}
 
 			using (System.IO.StreamWriter file =
-			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-FilesHaveOneChild-all.txt", false))
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-DescendantAndFilesOneChildGreater-all.txt", false))
 			{
 				file.WriteLine("File size\tStaticness\tValue/size distance");
 				for (int i = 0; i < compiledEvaluation[0].Length; i++)
