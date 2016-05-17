@@ -21,6 +21,16 @@ namespace RINGSDrawing
 			this.CircleValue = circle;
 			this.SourceTag = sourceTag;
 		}
+
+		public override int NumberOfChildren()
+		{
+			return SourceTag.NumberOfChildren();
+		}
+
+		public override int NumberOfDecendents()
+		{
+			return SourceTag.NumberOfDecendents();
+		}
 	}
 
 
