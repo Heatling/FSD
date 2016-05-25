@@ -91,7 +91,7 @@ namespace RINGSDrawing
 			RINGSForm f = new RINGSForm(drawingSize * 2, drawingSize * 2);
 			f.Show();
 			f.DrawAllCircles(layout);
-			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\deep-large-folder" + "-master.png");
+			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\deep-large-folder" + "-CompleteBottomUpRINGS.png");
 			Console.ReadLine();
 		}
 
