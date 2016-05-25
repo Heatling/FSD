@@ -91,7 +91,7 @@ namespace RINGSDrawing
 			RINGSForm f = new RINGSForm(drawingSize * 2, drawingSize * 2);
 			f.Show();
 			f.DrawAllCircles(layout);
-			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\many-equal-files" + "-FilesHaveOneChild.png");
+			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\many-equal-files" + "-FilesHaveOneChildLess.png");
 			Console.ReadLine();
 		}
 
