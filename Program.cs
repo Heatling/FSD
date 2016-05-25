@@ -80,7 +80,7 @@ namespace RINGSDrawing
 		public static void t6Main(String[] args)
 		{
 			Tag r = XMLReaderToTree.extractDirectory(
-				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\deep-large-folder.xml", "");
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\many-equal-files.xml", "");
 
 			//printTagAndChildren(r, 0);
 			int drawingSize = 100;
@@ -91,7 +91,7 @@ namespace RINGSDrawing
 			RINGSForm f = new RINGSForm(drawingSize * 2, drawingSize * 2);
 			f.Show();
 			f.DrawAllCircles(layout);
-			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\deep-large-folder" + "-master.png");
+			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\many-equal-files" + "-master.png");
 			Console.ReadLine();
 		}
 
