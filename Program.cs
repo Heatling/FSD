@@ -59,10 +59,10 @@ namespace RINGSDrawing
 		{
 
 			Tag r = XMLReaderToTree.extractDirectory(
-				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\RINGS-fig2-complete.xml", "");
 
 			//printTagAndChildren(r, 0);
-			int drawingSize =6000;
+			int drawingSize =200;
 			Console.WriteLine("Loaded tree.");
 			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout.");

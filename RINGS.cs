@@ -175,7 +175,7 @@ namespace RINGSDrawing
 
 				tempChildrenOfLevel = (double)numberOfChildren(nodes, firstChild, firstChild + i);
 				//Console.WriteLine("Children of level = " + tempChildrenOfLevel);
-				tempTotalChildren = (double) numberOfChildren(nodes, firstChild, nodes.Length);
+				tempTotalChildren = (double) numberOfChildren(nodes, 0, nodes.Length);
 				//Console.WriteLine("Total children = " + tempTotalChildren);
 
 				if (tempChildrenOfLevel <= 0 || tempTotalChildren <= 0)
