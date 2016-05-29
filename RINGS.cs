@@ -83,9 +83,11 @@ namespace RINGSDrawing
 			//Console.WriteLine("Starting sort.");
 			sortByNumberOfChildrenLargestFirst(children);
 			//Console.WriteLine("Ending sort");
+			double freeArea = 1;
 			while (childrenDrawn < children.Length)
 			{
-				tempMaxChildrenInLevel = findMaxChildrenInLevel(children, childrenDrawn);
+				tempMaxChildrenInLevel = findMaxChildrenInLevel(children, childrenDrawn, freeArea);
+				freeArea *= areaLeftInCenter(tempMaxChildrenInLevel);
 				//Console.WriteLine("Max children in level: " + tempMaxChildrenInLevel);
 				childRadius = radius - (radius/(Math.Sin(Math.PI/tempMaxChildrenInLevel)+1));
 				//Console.WriteLine("Child Radius: " + childRadius);
@@ -162,7 +164,7 @@ namespace RINGSDrawing
 		/// <param name="nodes"></param>
 		/// <param name="firstChild"></param>
 		/// <returns></returns>
-		static int findMaxChildrenInLevel(Node[] nodes, int firstChild)
+		static int findMaxChildrenInLevel(Node[] nodes, int firstChild, double freeArea)
 		{
 			//Console.WriteLine("findMaxChildrenInLevel : nodes[" + nodes.Length + 
 			//"], firstChild[" + firstChild + "]");
@@ -170,7 +172,7 @@ namespace RINGSDrawing
 			for (int i = 3; i<nodes.Length-firstChild; i++)
 			{
 				//Console.WriteLine("Area taken: i = " + i);
-				tempAreaTaken = areaLeftInCenter(i);
+				tempAreaTaken = freeArea * areaLeftInCenter(i);
 				//Console.WriteLine("Area taken: tempAreaTaken = " + tempAreaTaken);
 
 				tempChildrenOfLevel = (double)numberOfChildren(nodes, firstChild, firstChild + i);
@@ -178,7 +180,7 @@ namespace RINGSDrawing
 				tempTotalChildren = (double) numberOfChildren(nodes, 0, nodes.Length);
 				//Console.WriteLine("Total children = " + tempTotalChildren);
 
-				if (tempChildrenOfLevel <= 0 || tempTotalChildren <= 0)
+				if (/*tempChildrenOfLevel <= 0 ||*/ tempTotalChildren <= 0)
 				{
 					//Console.WriteLine("No children found, break");
 					break;
@@ -187,7 +189,7 @@ namespace RINGSDrawing
 				tempChildDecendentFraction = tempChildrenOfLevel / tempTotalChildren;
 
 				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
-				if (tempChildDecendentFraction >= 1.0 - tempAreaTaken)
+				if (tempChildDecendentFraction >= freeArea - tempAreaTaken)
 				{
 					return i;
 				}
