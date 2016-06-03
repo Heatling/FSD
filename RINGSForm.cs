@@ -15,9 +15,11 @@ namespace RINGSDrawing
 	public class CircleNode : StaticNode
 	{
 		public Circle CircleValue { get; }
-		public CircleNode(Circle circle, CircleNode[] children): base(children)
+		public Tag SourceTag { get; }
+		public CircleNode(Circle circle, Tag sourceTag, CircleNode[] children): base(children)
 		{
 			this.CircleValue = circle;
+			this.SourceTag = sourceTag;
 		}
 	}
 
@@ -26,6 +28,8 @@ namespace RINGSDrawing
 	{
 		static int drawn = 0;
 		static int maxDraw = 300000;
+		static Image fileThumb = Image.FromFile(@"resources/images/file-thumbnail.png");
+
 		Bitmap bitmap;
 		
 		/// <summary>
@@ -67,27 +71,34 @@ namespace RINGSDrawing
 			Console.WriteLine("Drawing Progress: " + (drawn++ * 100) / maxDraw);
 			System.Drawing.Rectangle tempRec;
 			Circle c = node.CircleValue;
+
 			//Console.WriteLine("Drawing circle: " + c);
 			tempRec = new System.Drawing.Rectangle(
 							(int)(c.CenterX - c.Radius), (int)(c.CenterY - c.Radius),
 							2 * (int)(c.Radius), 2 * (int)(c.Radius));
 			graphics.DrawEllipse(color, tempRec);
+
+			Pen colorToUse = (color == Pens.Red) ? Pens.Blue : Pens.Red;
+
 			foreach (CircleNode n in node.GetChildren())
 			{
+				Tag sourceTag = n.SourceTag;
+				string type;
+				sourceTag.Properties.TryGetValue("type",out type);
 				
-				if (color == Pens.Red)
+				if (!type.Equals("file"))
 				{
-					DrawCircle(n, graphics, Pens.Blue);
-					graphics.DrawLine(Pens.Blue, (int)c.CenterX, (int)c.CenterY,
-								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
+					DrawCircle(n, graphics, colorToUse);
 				}
 				else
 				{
-					DrawCircle(n, graphics, Pens.Red);
-					graphics.DrawLine(Pens.Red, (int)c.CenterX, (int)c.CenterY,
-								(int)n.CircleValue.CenterX, (int)n.CircleValue.CenterY);
+
+					tempRec =new System.Drawing.Rectangle(
+							(int)(n.CircleValue.CenterX - n.CircleValue.Radius), 
+							(int)(n.CircleValue.CenterY - n.CircleValue.Radius),
+							2 * (int)(n.CircleValue.Radius), 2 * (int)(n.CircleValue.Radius));
+					graphics.FillEllipse(new SolidBrush(colorToUse.Color), tempRec);
 				}
-				
 			}
 		}
 		
