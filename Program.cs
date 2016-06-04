@@ -11,11 +11,11 @@ namespace RINGSDrawing
 		static void Main(string[] args)
 		{
 			//t4Main(args);
-			t5Main(args);
+			//t5Main(args);
 			//t6Main(args);
 			//evaluateFS_SS_15_03_16();	
 			//evaluateFig2Complete();	
-			//evaluateScreenshots();
+			evaluateScreenshots();
 		}
 		
 		/// <summary>
@@ -61,10 +61,10 @@ namespace RINGSDrawing
 		{
 
 			Tag r = XMLReaderToTree.extractDirectory(
-				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\RINGS-fig2-complete.xml", "");
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
 
 			//printTagAndChildren(r, 0);
-			int drawingSize =200;
+			int drawingSize =8000;
 			Console.WriteLine("Loaded tree.");
 			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
 			Console.WriteLine("Created layout.");
