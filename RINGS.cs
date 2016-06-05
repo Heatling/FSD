@@ -81,7 +81,7 @@ namespace RINGSDrawing
 			double direction, childRadius;
 
 			//Console.WriteLine("Starting sort.");
-			sortByNumberOfChildrenLargestFirst(children);
+			sortByValueLargestFirst(children);
 			//Console.WriteLine("Ending sort");
 			while (childrenDrawn < children.Length)
 			{
@@ -134,10 +134,20 @@ namespace RINGSDrawing
 		/// The size of a node is specified by the number of direct children it has.
 		/// </summary>
 		/// <param name="nodes"></param>
-		public static void sortByNumberOfChildrenLargestFirst(Node[] nodes)
+		public static void sortByValueLargestFirst(Tag[] nodes)
 		{
-			Array.Sort(nodes, delegate (Node x, Node y) {
-				return x.NumberOfChildren() - y.NumberOfChildren();
+			Array.Sort(nodes, delegate (Tag x, Tag y) {
+				int primary = x.NumberOfChildren() - y.NumberOfChildren();
+
+				if(primary == 0)
+				{
+					string xName, yName;
+					x.Properties.TryGetValue("name", out xName);
+					y.Properties.TryGetValue("name", out yName);
+
+					return xName.CompareTo(yName);
+				}
+				return primary;
 			});
 			Array.Reverse(nodes);
 

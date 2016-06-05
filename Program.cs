@@ -12,6 +12,7 @@ namespace RINGSDrawing
 		{
 			//t4Main(args);
 			//t5Main(args);
+			//t6Main(args);
 			//evaluateFS_SS_15_03_16();	
 			//evaluateFig2Complete();	
 			evaluateScreenshots();
@@ -74,6 +75,24 @@ namespace RINGSDrawing
 			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.png");
 			Console.ReadLine();
 
+		}
+
+		public static void t6Main(String[] args)
+		{
+			Tag r = XMLReaderToTree.extractDirectory(
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\many-equal-files.xml", "");
+
+			//printTagAndChildren(r, 0);
+			int drawingSize = 100;
+			Console.WriteLine("Loaded tree.");
+			CircleNode layout = RINGS.MakeLayout(r, drawingSize);
+			Console.WriteLine("Created layout.");
+
+			RINGSForm f = new RINGSForm(drawingSize * 2, drawingSize * 2);
+			f.Show();
+			f.DrawAllCircles(layout);
+			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\many-equal-files" + "-master.png");
+			Console.ReadLine();
 		}
 
 		public static void evaluateFS_SS_15_03_16()
@@ -174,7 +193,7 @@ namespace RINGSDrawing
 			}
 
 			using (System.IO.StreamWriter file =
-			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-LessThanOneMinusF-all.txt", false))
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-LexicalLess -all.txt", false))
 			{
 				file.WriteLine("File size\tStaticness\tValue/size distance");
 				for (int i = 0; i < compiledEvaluation[0].Length; i++)
