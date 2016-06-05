@@ -12,10 +12,10 @@ namespace RINGSDrawing
 		{
 			//t4Main(args);
 			//t5Main(args);
-			t6Main(args);
+			//t6Main(args);
 			//evaluateFS_SS_15_03_16();	
 			//evaluateFig2Complete();	
-			//evaluateScreenshots();
+			evaluateScreenshots();
 		}
 		
 		/// <summary>
@@ -193,7 +193,7 @@ namespace RINGSDrawing
 			}
 
 			using (System.IO.StreamWriter file =
-			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-master-all.txt", false))
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-LexicalGreater-all.txt", false))
 			{
 				file.WriteLine("File size\tStaticness\tValue/size distance");
 				for (int i = 0; i < compiledEvaluation[0].Length; i++)
