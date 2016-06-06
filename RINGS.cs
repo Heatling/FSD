@@ -203,7 +203,7 @@ namespace RINGSDrawing
 				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
 				if (tempChildDecendentFraction >= freeArea - tempAreaTaken)
 				{
-					return i;
+					return Math.Max(i-1, 3);
 				}
 			}
 			//Console.WriteLine("No k found, return " + (nodes.Length - firstChild));

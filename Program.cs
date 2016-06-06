@@ -193,7 +193,7 @@ namespace RINGSDrawing
 			}
 
 			using (System.IO.StreamWriter file =
-			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-LexicalKCorrectedBigFilesGreater-all.txt", false))
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-LexicalKCorrectedBigFilesLess-all.txt", false))
 			{
 				file.WriteLine("File size\tStaticness\tValue/size distance");
 				for (int i = 0; i < compiledEvaluation[0].Length; i++)
