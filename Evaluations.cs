@@ -201,12 +201,27 @@ namespace RINGSDrawing
 
 		public static void calculateMutualStaticness(CircleNode[] siblings, List<int> resultStore)
 		{
-			RINGS.sortByNumberOfChildrenLargestFirst(siblings);
-
-			for(int i = 1; i<siblings.Count(); i++)
+			Tag[] siblingTags = new Tag[siblings.Length];
+			for(int i = 0; i<siblings.Length; i++)
 			{
-				resultStore.Add(siblings.ElementAt(i - 1).SourceTag.NumberOfChildren() 
-						- siblings.ElementAt(i).SourceTag.NumberOfChildren());
+				siblingTags[i] = siblings[i].SourceTag;
+			}
+
+			RINGS.sortByValueLargestFirst(siblingTags);
+
+			for(int i = 1; i<siblingTags.Length; i++)
+			{
+				int stat = siblingTags[i - 1].NumberOfChildren()
+						- siblingTags[i].NumberOfChildren();
+				if (stat == 0)
+				{
+					resultStore.Add(1);
+				}
+				else
+				{
+					resultStore.Add(stat);
+				}
+				
 			}
 
 			foreach(CircleNode s in siblings)
