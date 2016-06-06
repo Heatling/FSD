@@ -202,7 +202,6 @@ namespace RINGSDrawing
 
 				//Console.WriteLine("tempChildDecendentFraction = " + tempChildDecendentFraction);
 				if (tempChildDecendentFraction >= freeArea - tempAreaTaken)
-
 				{
 					return i;
 				}
