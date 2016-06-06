@@ -61,7 +61,7 @@ namespace RINGSDrawing
 		{
 
 			Tag r = XMLReaderToTree.extractDirectory(
-				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\RINGS-fig2-complete.xml", "");
+				@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\File system screenshots\FS SS 15-03-16.xml", "");
 
 			//printTagAndChildren(r, 0);
 			int drawingSize =8000;
@@ -91,7 +91,7 @@ namespace RINGSDrawing
 			RINGSForm f = new RINGSForm(drawingSize * 2, drawingSize * 2);
 			f.Show();
 			f.DrawAllCircles(layout);
-			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\many-equal-files" + "-master.png");
+			f.drawToFile(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\report\file-systems\many-equal-files" + "-GreaterThanOneMinusF.png");
 			Console.ReadLine();
 		}
 
@@ -193,7 +193,7 @@ namespace RINGSDrawing
 			}
 
 			using (System.IO.StreamWriter file =
-			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-LexicalClosest-all.txt", false))
+			new System.IO.StreamWriter(@"C:\Users\Emad\Dropbox\DTU\Bachelor projekt\Drawing algorithms\Evaluations\evaluations-LexicalKCorrectedBigFilesClosest-all.txt", false))
 			{
 				file.WriteLine("File size\tStaticness\tValue/size distance");
 				for (int i = 0; i < compiledEvaluation[0].Length; i++)
